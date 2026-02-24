@@ -1,6 +1,6 @@
 {
   "name": "praxis-kit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Spec-driven development kit for Claude Code with intelligent memory management",
   "bin": {
     "praxis-kit": "bin/cli.js"
