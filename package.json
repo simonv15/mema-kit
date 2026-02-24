@@ -1,26 +1,27 @@
 {
-  "name": "praxis-kit",
-  "version": "1.0.1",
-  "description": "Spec-driven development kit for Claude Code with intelligent memory management",
+  "name": "mema-kit",
+  "version": "1.0.3",
+  "description": "Memory protocol kit for Claude Code skills",
   "bin": {
-    "praxis-kit": "bin/cli.js"
+    "mema-kit": "bin/cli.js"
   },
   "files": [
+    "docs/",
     "bin/",
     "skills/",
     "templates/"
   ],
   "keywords": [
     "claude-code",
-    "ai-coding",
-    "development-workflow",
-    "tdd",
-    "claude-skills"
+    "ai-memory",
+    "claude-skills",
+    "memory-protocol",
+    "agent-memory"
   ],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/simonv15/praxis-kit.git"
+    "url": "git+https://github.com/simonv15/mema-kit.git"
   },
   "engines": {
     "node": ">=16.7.0"

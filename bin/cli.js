@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const VERSION = require('../package.json').version;
-const VERSION_COMMENT = `<!-- praxis-kit v${VERSION} -->`;
+const VERSION_COMMENT = `<!-- mema-kit v${VERSION} -->`;
 
 // Paths
 const packageRoot = path.resolve(__dirname, '..');
@@ -32,7 +32,7 @@ function runInstall() {
   if (fs.existsSync(targetDir)) {
     const hasSkills = fs.readdirSync(targetDir).some(f => f.endsWith('.md') || fs.statSync(path.join(targetDir, f)).isDirectory());
     if (hasSkills) {
-      console.log('⚠  Praxis-kit skills already exist in .claude/skills/');
+      console.log('⚠  mema-kit skills already exist in .claude/skills/');
       console.log('   Use --update to replace with the latest version.');
       console.log('   Or delete .claude/skills/ and run again for a fresh install.');
       process.exit(1);
@@ -45,19 +45,19 @@ function runInstall() {
   // Copy all skills
   copySkills();
 
-  console.log('✓ Praxis-kit skills installed to .claude/skills/');
+  console.log('✓ mema-kit skills installed to .claude/skills/');
   console.log('');
-  console.log('Next step: Open your project in Claude Code and run /kickoff');
+  console.log('Next step: Open your project in Claude Code and run /onboard');
   console.log('');
   console.log('  claude');
-  console.log('  > /kickoff');
+  console.log('  > /onboard');
   console.log('');
 }
 
 function runUpdate() {
   if (!fs.existsSync(targetDir)) {
     console.log('⚠  No .claude/skills/ directory found.');
-    console.log('   Run npx praxis-kit (without --update) for a fresh install.');
+    console.log('   Run npx mema-kit (without --update) for a fresh install.');
     process.exit(1);
   }
 
@@ -65,22 +65,22 @@ function runUpdate() {
   const protocolPath = path.join(targetDir, '_memory-protocol.md');
   if (fs.existsSync(protocolPath)) {
     const content = fs.readFileSync(protocolPath, 'utf8');
-    const versionMatch = content.match(/<!-- praxis-kit v([\d.]+) -->/);
+    const versionMatch = content.match(/<!-- mema-kit v([\d.]+) -->/);
     if (versionMatch && versionMatch[1] === VERSION) {
-      console.log(`✓ Praxis-kit skills are already at v${VERSION}. No update needed.`);
+      console.log(`✓ mema-kit skills are already at v${VERSION}. No update needed.`);
       process.exit(0);
     }
     if (versionMatch) {
-      console.log(`Updating Praxis-kit skills from v${versionMatch[1]} to v${VERSION}...`);
+      console.log(`Updating mema-kit skills from v${versionMatch[1]} to v${VERSION}...`);
     }
   }
 
   // Copy (overwrite) all skills
   copySkills();
 
-  console.log(`✓ Praxis-kit skills updated to v${VERSION}`);
+  console.log(`✓ mema-kit skills updated to v${VERSION}`);
   console.log('');
-  console.log('  .praxis/ and CLAUDE.md were not modified.');
+  console.log('  .mema/ and CLAUDE.md were not modified.');
   console.log('');
 }
 
@@ -92,7 +92,7 @@ function copySkills() {
     const targetPath = path.join(targetDir, entry.name);
 
     if (entry.isDirectory()) {
-      // Skill directory (e.g., kickoff/)
+      // Skill directory (e.g., onboard/)
       fs.mkdirSync(targetPath, { recursive: true });
       const files = fs.readdirSync(sourcePath);
       for (const file of files) {
@@ -109,22 +109,22 @@ function copySkills() {
 
 function addVersionComment(content) {
   // Remove any existing version comment
-  const cleaned = content.replace(/<!-- praxis-kit v[\d.]+ -->\n?/, '');
+  const cleaned = content.replace(/<!-- mema-kit v[\d.]+ -->\n?/, '');
   // Add current version at the end
   return cleaned.trimEnd() + '\n\n' + VERSION_COMMENT + '\n';
 }
 
 function printHelp() {
   console.log(`
-praxis-kit v${VERSION} — Spec-driven development kit for Claude Code
+mema-kit v${VERSION} — Memory protocol kit for Claude Code skills
 
 Usage:
-  npx praxis-kit            Install skills to .claude/skills/
-  npx praxis-kit --update   Update skills to the latest version
-  npx praxis-kit --help     Show this help message
+  npx mema-kit            Install skills to .claude/skills/
+  npx mema-kit --update   Update skills to the latest version
+  npx mema-kit --help     Show this help message
 
-After installing, open your project in Claude Code and run /kickoff.
+After installing, open your project in Claude Code and run /onboard.
 
-Learn more: https://github.com/simonv15/praxis-kit
+Learn more: https://github.com/simonv15/mema-kit
   `.trim());
 }

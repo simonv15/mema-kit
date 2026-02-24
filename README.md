@@ -1,77 +1,88 @@
-# Praxis-kit
+# mema-kit
 
-Spec-driven development kit for Claude Code that adds structured workflow and intelligent memory management via slash commands.
+Memory protocol kit for Claude Code skills. Give any skill persistent, curated memory across sessions.
 
-**What it does:** Six commands guide you through Explore → Plan → Code. The agent automatically loads relevant context, saves curated knowledge, and prunes noise between sessions.
+**What it does:** A `.mema/` directory in your project stores architecture decisions, requirements, lessons learned, and reusable patterns as curated markdown. Skills automatically load relevant context at the start of each session and save curated knowledge when done.
 
-**Key differentiator:** A `.praxis/` memory system that persists project architecture, decisions (with reasoning), task context, and agent-learned lessons as curated markdown. Each new session starts with the right context already loaded — no re-explaining, no expensive codebase exploration.
+**Key differentiator:** The memory protocol (AUTO-LOAD → WORK → AUTO-SAVE & CURATE → AUTO-INDEX) is a reusable pattern. Any skill you build can plug into it — not just the two that ship with mema-kit.
 
-## Install
+## Quick Start
 
 ```bash
 # 1. Install skills into your project
-npm install praxis-kit
+npx mema-kit
 
-# 2. Open Claude Code and initialize
+# 2. Open Claude Code and bootstrap memory
 claude
-> /kickoff
+> /onboard
 ```
 
-`/kickoff` creates the `.praxis/` memory structure, updates CLAUDE.md, and configures `.gitignore`.
+`/onboard` scans your project, creates the `.mema/` memory structure, populates initial architecture and requirements docs, and configures CLAUDE.md and `.gitignore`.
 
-**Alternative installs** (all end with "run `/kickoff`"):
-
-```bash
-npx praxis-kit                       # One-off install without adding to package.json
-npx skills add github/praxis-kit     # Via Vercel Skills
-```
-
-## Workflow
-
-```
-/kickoff → /profile → /explore → /plan-docs → /gen-test → /implement
-                        ↑                                      │
-                        └──────── loop as needed ──────────────┘
-```
+## Built-in Skills
 
 | Command | Purpose |
 |---------|---------|
-| `/kickoff` | Initialize project — creates `.praxis/`, updates CLAUDE.md |
-| `/profile` | Set your skill level, preferences, communication style |
-| `/explore` | Research and clarify — tech decisions, frameworks, business logic |
-| `/plan-docs` | Generate implementation-ready plans from exploration findings |
-| `/gen-test` | Generate TDD test cases from plans (tests first, code second) |
-| `/implement` | Implement code following the plan, running tests at each step |
-
-Every command is **idempotent** — safe to re-run. Steps can be skipped; each skill checks prerequisites and guides you if something's missing.
+| `/onboard` | Bootstrap memory for a project — scans codebase, creates `.mema/`, populates initial knowledge |
+| `/create-skill` | Generate a new memory-aware skill with the correct lifecycle phases |
 
 ## How Memory Works
 
-Praxis-kit uses a `.praxis/` directory in your project to persist knowledge between sessions:
+mema-kit uses a `.mema/` directory in your project to persist knowledge between sessions:
 
 ```
-.praxis/
+.mema/
 ├── index.md             # Memory map — agent reads this first
 ├── project-memory/      # Architecture, requirements, decisions
+│   └── decisions/       # Individual decision records with reasoning
 ├── task-memory/         # Per-task context, plans, active work
 ├── agent-memory/        # Lessons learned, reusable patterns
 └── archive/             # Completed task memories
 ```
 
-- **Auto-load**: Each command reads `index.md` and loads only the files relevant to your current task.
+- **Auto-load**: Skills read `index.md` and load only the files relevant to the current task.
 - **Auto-save**: After work, the agent curates findings into the right memory files.
 - **Auto-prune**: Noise is removed; only actionable knowledge is kept.
-- **Self-healing**: If `index.md` gets out of sync, the next command rebuilds it from the directory structure.
+- **Self-healing**: If `index.md` gets out of sync, the next skill rebuilds it from the directory structure.
 
 Memory is just markdown. Open any file to see what the agent knows. Edit directly if something's wrong.
+
+## The Memory Protocol
+
+Every memory-aware skill follows four phases:
+
+1. **AUTO-LOAD** — Read `index.md`, decide what's relevant, load only those files
+2. **WORK** — Execute the skill's core purpose with loaded context
+3. **AUTO-SAVE & CURATE** — For each piece of knowledge, decide: ADD / UPDATE / DELETE / NOOP
+4. **AUTO-INDEX** — Update `index.md` to reflect all changes
+
+The protocol is defined in `_memory-protocol.md` and shared across all skills (never duplicated). See [docs/guide.md](docs/guide.md) for the full protocol reference.
+
+## Building Your Own Skills
+
+Use `/create-skill` to generate memory-aware skills:
+
+```
+> /create-skill
+
+Skill name: review
+Purpose: Review code changes for quality and consistency
+Complexity: standard
+```
+
+This creates `.claude/skills/review/SKILL.md` with the full 4-phase memory lifecycle wired in. Three complexity levels are available:
+
+- **Simple** (3 phases) — Read-only skills like code review, linting
+- **Standard** (4 phases) — Most skills that read and write memory
+- **Advanced** (4 phases + task management) — Multi-step workflows with archiving
 
 ## Updating
 
 ```bash
-npx praxis-kit --update
+npx mema-kit --update
 ```
 
-Updates skill files only. Never touches `.praxis/`, CLAUDE.md, or `.gitignore`.
+Updates skill files only. Never touches `.mema/`, CLAUDE.md, or `.gitignore`.
 
 ## Requirements
 
@@ -80,12 +91,12 @@ Updates skill files only. Never touches `.praxis/`, CLAUDE.md, or `.gitignore`.
 
 ## Documentation
 
-See [docs/guide.md](docs/guide.md) for the full usage guide with a worked example.
+See [docs/guide.md](docs/guide.md) for the full usage guide with worked examples and protocol reference.
 
 ## Links
 
-- [npm package](https://www.npmjs.com/package/praxis-kit)
-- [GitHub repository](https://github.com/simonv15/praxis-kit)
+- [npm package](https://www.npmjs.com/package/mema-kit)
+- [GitHub repository](https://github.com/simonv15/mema-kit)
 
 ## License
 
