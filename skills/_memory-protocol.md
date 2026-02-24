@@ -1,13 +1,13 @@
 # Memory Protocol
 
-This document defines how you manage memory in `.praxis/`. Every skill that reads or writes memory must follow these rules.
+This document defines how you manage memory in `.mema/`. Every skill that reads or writes memory must follow these rules.
 
 ## The Memory Lifecycle
 
 Every skill execution follows four phases:
 
 ### Phase 1: AUTO-LOAD
-1. Read `.praxis/index.md` to understand current project state
+1. Read `.mema/index.md` to understand current project state
 2. If `index.md` is missing or empty, run the **Rebuild Procedure** (see below)
 3. Based on the user's request, decide which memory files are relevant
 4. Read only the relevant files — do NOT load everything
@@ -43,7 +43,7 @@ For every piece of knowledge produced during this session, decide one of four ac
 - Only act (ADD/UPDATE/DELETE) when there's a clear reason
 
 ### Phase 4: AUTO-INDEX
-Update `.praxis/index.md` to reflect all changes made in Phase 3. This is **mandatory** — never skip it.
+Update `.mema/index.md` to reflect all changes made in Phase 3. This is **mandatory** — never skip it.
 
 ## What to Save vs. What to Prune
 
@@ -96,7 +96,7 @@ Every memory file includes metadata in the body (not YAML frontmatter):
 Status values:
 - `active` — Current and relevant
 - `complete` — Finished but still useful for reference
-- `archived` — Moved to archive/ (set by /implement on task completion)
+- `archived` — Moved to archive/ (set by the completing skill on task completion)
 
 Place metadata on the line immediately after the title heading.
 
@@ -137,10 +137,10 @@ After every curated save:
 
 ### Rebuild Procedure (fallback)
 If `index.md` is missing, empty, or clearly stale (references files that don't exist):
-1. List all directories in `.praxis/`: `project-memory/`, `task-memory/`, `agent-memory/`, `archive/`
+1. List all directories in `.mema/`: `project-memory/`, `task-memory/`, `agent-memory/`, `archive/`
 2. For each directory, list all `.md` files (excluding `_templates/`)
 3. Read the first 3 lines of each file to get title and metadata
 4. Generate index entries in the format above
 5. Write the rebuilt `index.md`
 
-This procedure makes the index a **rebuildable cache** — it's convenient but never the only copy of truth. The actual files in `.praxis/` are the source of truth.
+This procedure makes the index a **rebuildable cache** — it's convenient but never the only copy of truth. The actual files in `.mema/` are the source of truth.

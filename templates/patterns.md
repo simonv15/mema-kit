@@ -2,7 +2,7 @@
 
 **Updated:** YYYY-MM-DD
 
-<!-- Reusable patterns and approaches that worked well. Load these during /implement to apply proven solutions. -->
+<!-- Reusable patterns and approaches that worked well. Load these to apply proven solutions. -->
 
 ## Patterns
 
