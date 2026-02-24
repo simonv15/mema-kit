@@ -1,6 +1,6 @@
 # mema-kit
 
-Reusable memory protocol kit for Claude Code skills. Give any skill persistent, curated memory across sessions.
+Memory protocol kit for Claude Code skills. Give any skill persistent, curated memory across sessions.
 
 **What it does:** A `.mema/` directory in your project stores architecture decisions, requirements, lessons learned, and reusable patterns as curated markdown. Skills automatically load relevant context at the start of each session and save curated knowledge when done.
 

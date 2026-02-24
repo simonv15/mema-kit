@@ -1,6 +1,6 @@
 # mema-kit — Usage Guide
 
-**A reusable memory protocol kit for Claude Code skills.**
+**A memory protocol kit for Claude Code skills.**
 
 Install two skills. Get persistent, curated memory across every session. Build new skills that plug into the same memory system.
 

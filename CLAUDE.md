@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-mema-kit is a reusable memory protocol kit for Claude Code skills. It provides a `.mema/` memory system that persists curated knowledge (architecture, decisions, lessons, patterns) across sessions, plus two built-in skills: `/onboard` (bootstrap memory for a project) and `/create-skill` (generate new memory-aware skills).
+mema-kit is a memory protocol kit for Claude Code skills. It provides a `.mema/` memory system that persists curated knowledge (architecture, decisions, lessons, patterns) across sessions, plus two built-in skills: `/onboard` (bootstrap memory for a project) and `/create-skill` (generate new memory-aware skills).
 
 The core innovation is the **memory protocol** — a 4-phase lifecycle (AUTO-LOAD → WORK → AUTO-SAVE & CURATE → AUTO-INDEX) that any skill can plug into.
 

@@ -116,7 +116,7 @@ function addVersionComment(content) {
 
 function printHelp() {
   console.log(`
-mema-kit v${VERSION} — Reusable memory protocol kit for Claude Code skills
+mema-kit v${VERSION} — Memory protocol kit for Claude Code skills
 
 Usage:
   npx mema-kit            Install skills to .claude/skills/
