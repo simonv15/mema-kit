@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Spec-driven development kit for Claude Code with intelligent memory management",
   "bin": {
-    "praxis-kit": "./bin/cli.js"
+    "praxis-kit": "bin/cli.js"
   },
   "files": [
     "bin/",
