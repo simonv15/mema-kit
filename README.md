@@ -76,8 +76,6 @@ This creates `.claude/skills/review/SKILL.md` with the full 4-phase memory lifec
 - **Standard** (4 phases) — Most skills that read and write memory
 - **Advanced** (4 phases + task management) — Multi-step workflows with archiving
 
-See [docs/guide.md](docs/guide.md) for a complete worked example.
-
 ## Updating
 
 ```bash

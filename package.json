@@ -1,11 +1,12 @@
 {
   "name": "mema-kit",
-  "version": "1.0.0",
-  "description": "Reusable memory protocol kit for Claude Code skills",
+  "version": "1.0.3",
+  "description": "Memory protocol kit for Claude Code skills",
   "bin": {
     "mema-kit": "bin/cli.js"
   },
   "files": [
+    "docs/",
     "bin/",
     "skills/",
     "templates/"
