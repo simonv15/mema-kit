@@ -4,7 +4,7 @@ Memory protocol kit for Claude Code skills. Give any skill persistent, curated m
 
 **What it does:** A `.mema/` directory in your project stores architecture decisions, requirements, lessons learned, and reusable patterns as curated markdown. Skills automatically load relevant context at the start of each session and save curated knowledge when done.
 
-**Key differentiator:** The memory protocol (AUTO-LOAD → WORK → AUTO-SAVE & CURATE → AUTO-INDEX) is a reusable pattern. Any skill you build can plug into it — not just the two that ship with mema-kit.
+**Key differentiator:** The memory protocol (AUTO-LOAD → WORK → AUTO-SAVE & CURATE → AUTO-INDEX) is a reusable pattern. Any skill you build can plug into it — not just the three that ship with mema-kit.
 
 ## Quick Start
 
@@ -15,15 +15,19 @@ npx mema-kit
 # 2. Open Claude Code and bootstrap memory
 claude
 > /onboard
+
+# 3. Next session: load memory into context
+> /recall
 ```
 
-`/onboard` scans your project, creates the `.mema/` memory structure, populates initial architecture and requirements docs, and configures CLAUDE.md and `.gitignore`.
+`/onboard` scans your project, creates the `.mema/` memory structure, populates initial architecture and requirements docs, and configures CLAUDE.md and `.gitignore`. `/recall` loads that memory into any future session.
 
 ## Built-in Skills
 
 | Command | Purpose |
 |---------|---------|
 | `/onboard` | Bootstrap memory for a project — scans codebase, creates `.mema/`, populates initial knowledge |
+| `/recall` | Load project memory into the current session — instant context on cold start |
 | `/create-skill` | Generate a new memory-aware skill with the correct lifecycle phases |
 
 ## How Memory Works

@@ -2,7 +2,7 @@
 
 **A memory protocol kit for Claude Code skills.**
 
-Two built-in skills. Persistent memory across sessions. A protocol for building your own.
+Three built-in skills. Persistent memory across sessions. A protocol for building your own.
 
 ---
 
@@ -30,9 +30,37 @@ Think of it like a developer's notebook — it doesn't give you a bigger brain, 
 npx mema-kit          # install skills to .claude/skills/
 claude
 > /onboard            # scan project, create .mema/, populate initial memory
+> /recall             # next new session: load memory into context
 ```
 
 `/onboard` reads your package.json, README, directory structure, and representative source files, then writes real content to `architecture.md` and `requirements.md`. Idempotent — safe to re-run.
+
+`/recall` loads your project memory into the current session — use it at the start of every new conversation to restore context instantly.
+
+---
+
+## Recalling Memory: /recall
+
+Every new Claude Code session starts with a blank context. `/recall` fixes the cold-start problem by reading `.mema/` and printing a formatted summary into the conversation.
+
+### Modes
+
+| Mode | Command | What you get |
+|------|---------|--------------|
+| **Minimal** (default) | `/recall` or `/recall minimal` | Purpose, stack, architecture, current status, memory map |
+| **Full** | `/recall full` | Everything in Minimal + recent decisions, lessons, patterns, active context & plans |
+
+### When to use which
+
+| Situation | Mode |
+|-----------|------|
+| Starting a new session, need quick context | Minimal |
+| Picking up a multi-day task | Full |
+| Onboarding a teammate to the project | Full |
+| Quick check on what decisions exist | Full |
+| Daily development work | Minimal |
+
+`/recall` is **read-only** — it never modifies memory files. Safe to run at any time.
 
 ---
 
@@ -125,6 +153,8 @@ The agent loads the plan, architecture, and past lessons. It implements each ste
 ```
 
 Each skill reads what previous skills wrote. The index ties it all together.
+
+> **Tip:** Start every new session with `/recall` to load project context before using other skills. It takes seconds and saves minutes of re-exploration.
 
 ---
 

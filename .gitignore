@@ -1,0 +1,4 @@
+# mema-kit memory (developer-local)
+.mema/*
+# Uncomment to share project decisions with your team:
+# !.mema/project-memory/
