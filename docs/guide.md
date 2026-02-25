@@ -2,7 +2,7 @@
 
 **A memory protocol kit for Claude Code skills.**
 
-Three built-in skills. Persistent memory across sessions. A protocol for building your own.
+Five built-in skills. Persistent memory across sessions. A protocol for building your own.
 
 ---
 
@@ -64,11 +64,167 @@ Every new Claude Code session starts with a blank context. `/recall` fixes the c
 
 ---
 
-## Example: Building a Spec-Driven Dev Workflow
+## Planning Work: /plan
 
-mema-kit ships with `/onboard` and `/create-skill`. Everything else you build yourself. Here's how to create a 3-skill workflow: **explore → plan → implement**.
+`/plan` takes a high-level goal, explores your codebase, and produces a structured implementation plan with step-by-step specs. Plans are saved to `.mema/task-memory/` so `/implement` can execute them.
 
-### Step 1: Create `/explore`
+### Usage
+
+```
+> /plan add user authentication
+> /plan refactor the database layer
+> /plan add search functionality to the API
+```
+
+### What it does
+
+1. **Loads memory** — architecture, requirements, decisions, lessons, patterns
+2. **Explores the codebase** — reads relevant source files, understands current patterns
+3. **Asks clarifying questions** (1-2 max) if the goal is ambiguous
+4. **Produces a plan** — general approach + detailed steps with file paths and specifics
+5. **Saves to task-memory** — creates `context.md`, `plan.md`, and `status.md` in `task-memory/[task-name]/`
+
+### Example output
+
+```
+## Plan: User Authentication
+
+### Approach
+Add JWT-based authentication using the existing Fastify plugin system.
+Follows the controller → service → repository pattern already in the codebase.
+
+### Steps (5 total)
+1. Create auth database schema and migration
+2. Implement auth service (register, login, token refresh)
+3. Create auth route handlers
+4. Add authentication middleware (Fastify plugin)
+5. Add auth integration tests
+
+### Out of Scope
+- OAuth/social login
+- Role-based access control
+- Password reset flow
+
+---
+Plan saved to task-memory/user-authentication/
+To start implementing: /implement user-authentication
+```
+
+### Revising plans
+
+If you run `/plan` for a task that already has a plan, it will offer to revise the existing plan rather than starting from scratch. This makes `/plan` idempotent — safe to re-run.
+
+---
+
+## Implementing Plans: /implement
+
+`/implement` picks up steps from an existing plan, implements them one at a time, verifies the result, and tracks progress. It's designed to give you control — one step at a time by default.
+
+### Usage
+
+```
+> /implement user-authentication          # implement next incomplete step
+> /implement user-authentication step 3   # implement a specific step
+> /implement user-authentication all      # implement all remaining steps
+> /implement                              # list active tasks, then pick one
+```
+
+### What it does
+
+1. **Loads the plan** — reads `plan.md`, `status.md`, and `context.md` from the task
+2. **Picks the next step** — first incomplete step, or the one you specified
+3. **Implements the step** — creates/modifies files following the plan's spec
+4. **Verifies** — runs tests, checks for errors, validates against the plan
+5. **Updates progress** — marks the step complete in `status.md`
+6. **Reports** — shows what was done, what's next, overall progress
+
+### Progress tracking
+
+After each step, you'll see a progress summary:
+
+```
+## Progress: User Authentication
+
+Step 2/5 complete: Implement auth service
+
+Verified: All tests passing (4 new tests)
+
+### Overall Progress
+[====------] 2/5 steps
+Next: Step 3 — Create auth route handlers
+
+To continue: /implement user-authentication
+```
+
+### Task completion
+
+When all steps are done, `/implement` offers to archive the task:
+
+- Marks `status.md` as complete
+- Moves `task-memory/[task-name]/` to `archive/[task-name]/`
+- Removes the task from active tasks in `index.md`
+- Records any lessons learned and patterns discovered
+
+### Learning from implementation
+
+After each step, `/implement` reflects on the work:
+- Unexpected issues become **lessons** in `agent-memory/lessons.md`
+- Effective approaches become **patterns** in `agent-memory/patterns.md`
+- Decisions made during implementation are saved to `project-memory/decisions/`
+
+This means your memory grows smarter with every implementation cycle.
+
+---
+
+## The plan → implement Workflow
+
+`/plan` and `/implement` form a complete spec-driven development workflow:
+
+```
+/plan                              /implement
+  │                                    │
+  ├─ reads:                            ├─ reads:
+  │   architecture                     │   plan.md (from /plan)
+  │   requirements                     │   status.md
+  │   decisions                        │   context.md
+  │   lessons & patterns               │   architecture, decisions
+  │                                    │   lessons & patterns
+  ├─ writes:                           │
+  │   task-memory/[task]/context.md    ├─ writes:
+  │   task-memory/[task]/plan.md       │   status.md (mark steps done)
+  │   task-memory/[task]/status.md     │   decisions/ (if any)
+  │                                    │   lessons.md (if any)
+  │                                    │   patterns.md (if any)
+  │                                    │   archive/ (on completion)
+  ▼                                    ▼
+       both flow through .mema/index.md
+```
+
+### Full workflow example
+
+```bash
+# Session 1: Explore and plan
+> /recall                                    # load project context
+> /plan add user authentication              # explore codebase, produce plan
+
+# Session 2: Implement (pick up where you left off)
+> /recall                                    # load context + active tasks
+> /implement user-authentication             # implement step 1
+> /implement user-authentication             # implement step 2
+
+# Session 3: Finish up
+> /recall
+> /implement user-authentication all         # implement remaining steps
+# → task archived, lessons saved
+```
+
+---
+
+## Extending with Custom Skills
+
+mema-kit ships with five built-in skills (`/onboard`, `/recall`, `/plan`, `/implement`, `/create-skill`). You can create your own skills to extend the workflow.
+
+### Example: Create `/explore`
 
 ```
 > /create-skill
@@ -92,49 +248,9 @@ The agent loads your stack from memory, researches JWT vs sessions vs OAuth, and
   → "JWT with refresh tokens. Why: stateless, fits our REST API, team has experience."
 ```
 
-Next session, any skill that loads memory will know this decision exists.
+Next session, any skill that loads memory will know this decision exists — including `/plan`, which can incorporate it into implementation plans.
 
-### Step 2: Create `/plan`
-
-```
-> /create-skill
-  Name: plan
-  Purpose: Generate implementation plans from exploration findings
-  Complexity: standard
-```
-
-**Using it:**
-
-```
-> /plan plan the user auth endpoints
-```
-
-The agent loads the auth decision from Step 1, architecture, and requirements — then writes a step-by-step plan to `.mema/task-memory/user-auth/plan.md`.
-
-### Step 3: Create `/implement`
-
-```
-> /create-skill
-  Name: implement
-  Purpose: Implement code following a plan, run tests, save lessons
-  Complexity: advanced
-```
-
-Advanced complexity adds task tracking and archiving. When the task is done, the agent moves task files to `archive/` and records any lessons learned.
-
-**Using it:**
-
-```
-> /implement implement user auth endpoints
-```
-
-The agent loads the plan, architecture, and past lessons. It implements each step, runs tests, and when done:
-
-- Saves "Drizzle needs explicit type casting for enums" to `lessons.md`
-- Archives `task-memory/user-auth/` to `archive/user-auth/`
-- Updates `index.md`
-
-### How Memory Flows Between Skills
+### How custom skills connect with built-ins
 
 ```
 /explore          /plan             /implement
@@ -207,3 +323,4 @@ The index is a **rebuildable cache** — if it gets out of sync, the next skill 
 - **`.mema/` is gitignored by default.** To share decisions with your team, uncomment `!.mema/project-memory/` in `.gitignore`.
 - **Curate, don't hoard.** The value of memory is its signal-to-noise ratio. Prune aggressively.
 - **Any skill can use the protocol.** Use `/create-skill` or manually follow the 4-phase lifecycle.
+- **One step at a time.** `/implement` defaults to one step per invocation. This gives you a chance to review each change before continuing.
