@@ -1,6 +1,6 @@
 {
   "name": "mema-kit",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Memory protocol kit for Claude Code skills",
   "bin": {
     "mema-kit": "bin/cli.js"
