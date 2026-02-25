@@ -341,15 +341,145 @@ Build the index from the files you just created:
 
 ## Step 6: Update CLAUDE.md
 
-1. Read the current `CLAUDE.md` (if it exists)
-2. Search for `## Memory System` in the file content
-3. If found → **skip this step** (already configured)
-4. If not found → append the following section at the end of the file
-5. If `CLAUDE.md` doesn't exist → create the file with this content
+Read the current `CLAUDE.md` (if it exists) and follow the appropriate path:
 
-Append this section:
+### Path A: CLAUDE.md already exists
+
+1. Search for `## Memory System` in the file content
+2. If found → **skip this step entirely** (already configured). Record outcome as **skipped**.
+3. If not found → append the Memory System section (see below) at the end of the file. Record outcome as **appended**.
+
+Memory System section to append:
 
 ```
+## Memory System
+
+This project uses mema-kit for persistent memory across sessions.
+
+Memory lives in `.mema/`. At the start of each task, read `.mema/index.md` to load relevant context. After completing work, curate and save knowledge following the memory protocol in `.claude/skills/_memory-protocol.md`.
+
+Memory is managed automatically by skills — do not manually modify `.mema/` files unless correcting an error.
+```
+
+### Path B: CLAUDE.md does NOT exist — Generate comprehensive file
+
+Follow sub-steps 6a through 6f to build a rich CLAUDE.md from scratch. Use the scan data collected in Step 4 for all content. Record outcome as **generated**.
+
+#### 6a: Ask user "About Me"
+
+Ask the user a single question using the AskUserQuestion tool:
+
+> "Before I generate your CLAUDE.md, I'd like to personalize it. How would you describe yourself? (e.g., experience level, preferences for code style, anything you want Claude to know)"
+
+Provide 3 options:
+- **Junior developer** — "I'm learning. Explain decisions, be thorough in comments, correct my terminology gently."
+- **Senior developer** — "I'm experienced. Keep explanations brief, focus on trade-offs and edge cases."
+- **Skip** — "Skip personalization, use a sensible default."
+
+If the user selects "Skip" or doesn't respond, use this default:
+
+```
+When I ask you to implement something, briefly explain key decisions. Prefer clear, well-commented code.
+```
+
+#### 6b: Write the `# About Me` section
+
+Use the user's response from 6a to write a natural-language paragraph (3-5 lines). This section uses **H1** (`# About Me`), matching mema-kit's own CLAUDE.md convention.
+
+#### 6c: Write the `## Project Overview` section
+
+Using Step 4 scan data, generate three sub-sections:
+
+**Opening paragraph:** Project name (from `package.json` name field, `README.md` title, or directory name as fallback) and a 1-2 sentence description of what the project does.
+
+**`### Repository Structure`:** A directory tree (top-level + 1 level deep) with inline comments explaining each directory's purpose. Use the `tree` format:
+
+```
+project-name/
+├── src/           # Source code
+├── tests/         # Test suite
+└── package.json   # Dependencies and scripts
+```
+
+**`### Architecture`:** Architecture pattern (e.g., REST API, CLI tool, library), key entry points, and data flow. Keep to 2-4 sentences. If the project is too simple or unclear for an architecture description, write: "Architecture details will be added as the project grows."
+
+#### 6d: Write the `## Coding Standards` section
+
+Using Step 4c source file analysis, generate a bullet list covering:
+
+- **Naming:** Conventions observed (camelCase, snake_case, kebab-case for files, etc.)
+- **Style:** Formatting patterns (semicolons, quotes, indentation)
+- **Patterns:** Recurring code patterns (e.g., "error-first callbacks", "async/await throughout")
+- **Tooling:** Linting/formatting tools detected (ESLint, Prettier, Black, rustfmt, etc. — check `devDependencies`, config files like `.eslintrc`, `.prettierrc`, `pyproject.toml [tool.black]`)
+
+If insufficient data for any bullet, use a placeholder like: "No linting configuration detected — consider adding one."
+
+#### 6e: Write the `## Technical Workflows` section
+
+Using Step 4a package manager files (`package.json` scripts, `Makefile` targets, `pyproject.toml [tool.poetry.scripts]`, `Cargo.toml`, etc.), generate a list of common commands:
+
+```
+- `npm run dev` — Start development server
+- `npm test` — Run test suite
+- `npm run build` — Build for production
+```
+
+Include dev, test, build, and lint commands at minimum (if they exist). If no commands are detected, write: "No build/test commands detected. Add scripts to `package.json` (or equivalent) as the project matures."
+
+#### 6f: Write the `## Skill Commands` and `## Memory System` sections
+
+**Skill Commands:** Scan the `.claude/skills/` directory. For each subdirectory containing a `SKILL.md`, read the YAML frontmatter `description` field. Generate an entry:
+
+```
+- `/skill-name` — [description from frontmatter]
+```
+
+If no skills are found (shouldn't happen since we just installed them, but as a fallback):
+
+```
+- `/onboard` — Bootstrap the mema-kit memory system
+- `/recall` — Recall project memory into current session
+- `/create-skill` — Generate a new memory-aware skill
+```
+
+**Memory System:** Append the standard Memory System section (same text as Path A).
+
+#### Assemble the final CLAUDE.md
+
+Combine all sections into a single file in this order and write it:
+
+```
+# CLAUDE.md
+
+This file provides guidance to Claude Code when working with code in this repository.
+
+# About Me
+[Content from 6b]
+
+## Project Overview
+
+[Content from 6c — opening paragraph]
+
+### Repository Structure
+
+[Content from 6c — tree]
+
+### Architecture
+
+[Content from 6c — architecture description]
+
+## Coding Standards
+
+[Content from 6d]
+
+## Technical Workflows
+
+[Content from 6e]
+
+## Skill Commands
+
+[Content from 6f — skill list]
+
 ## Memory System
 
 This project uses mema-kit for persistent memory across sessions.
@@ -378,14 +508,22 @@ Append this block:
 
 ## Step 8: Confirm to the User
 
-Print a summary of what was done, including what you discovered about the project:
+Print a summary of what was done, including what you discovered about the project. Use the CLAUDE.md outcome recorded in Step 6 to select the appropriate message.
+
+For the CLAUDE.md line, use the matching outcome:
+
+- **generated** → `[check] CLAUDE.md generated with project overview, coding standards, workflows, and memory system`
+- **appended** → `[check] CLAUDE.md updated — memory system section appended`
+- **skipped** → `[check] CLAUDE.md — memory system section already present`
+
+### Fresh setup (first run):
 
 ```
 mema-kit initialized! Here's what was set up:
 
 [check] .mema/ directory structure (memory system)
 [check] Memory templates in .mema/_templates/
-[check] CLAUDE.md updated with memory system conventions
+[check] [CLAUDE.md outcome message from above]
 [check] .gitignore updated to exclude .mema/
 
 Project scan results:
@@ -403,14 +541,16 @@ Memory populated:
 Next: Start working on your project. Memory will be loaded and saved automatically by any mema-kit skill.
 ```
 
-If this was a re-run (some items already existed), adjust the summary to show what was verified vs. created:
+### Re-run (some items already existed):
+
+Adjust the summary to show what was verified vs. created:
 
 ```
 mema-kit verified! Everything looks good:
 
 [check] .mema/ directory structure — already exists, verified
 [check] Memory templates — already exist, skipped
-[check] CLAUDE.md — memory section already present
+[check] [CLAUDE.md outcome message from above]
 [check] .gitignore — .mema/ already excluded
 
 Your setup is intact. No changes were needed.
