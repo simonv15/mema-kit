@@ -1,18 +1,18 @@
 ---
-description: Execute implementation plan steps one at a time. Picks up the next step from an existing plan, implements it, verifies the result, and tracks progress. Run /plan first to create a plan.
+description: Execute implementation plan steps one at a time. Picks up the next step from an existing plan, implements it, verifies the result, and tracks progress. Run /mema.plan first to create a plan.
 ---
 
-# /implement — Plan Step Execution
+# /mema.implement — Plan Step Execution
 
-You are executing the /implement skill. Follow these steps carefully.
+You are executing the /mema.implement skill. Follow these steps carefully.
 
-This skill picks up a step from an existing plan (created by `/plan`), implements it, verifies the result, and updates progress tracking. By default, it implements **one step at a time** to give the user control over the process.
+This skill picks up a step from an existing plan (created by `/mema.plan`), implements it, verifies the result, and updates progress tracking. By default, it implements **one step at a time** to give the user control over the process.
 
 ## Phase 1: AUTO-LOAD
 
 1. Read `.mema/index.md` to understand current project state
 2. If `index.md` is missing or `.mema/` does not exist:
-   - Tell the user: "No memory found. Run `/onboard` first to set up mema-kit for this project."
+   - Tell the user: "No memory found. Run `/mema.onboard` first to set up mema-kit for this project."
    - **Stop here** — do not continue to further steps.
 3. If `index.md` is empty, run the **Rebuild Procedure** from `_memory-protocol.md`
 4. Scan `## Active Tasks` in `index.md` to find tasks with plans
@@ -28,13 +28,13 @@ This skill picks up a step from an existing plan (created by `/plan`), implement
 
 Parse the user's input to determine which task to implement:
 
-- **Task specified:** `/implement user-auth` → look for `task-memory/user-auth/`
-- **Task + step specified:** `/implement user-auth step 3` → load that specific step
-- **No task specified:** `/implement` → list active tasks from index.md and ask which one
-- **"all" modifier:** `/implement user-auth all` → implement all remaining steps sequentially (see 2e)
+- **Task specified:** `/mema.implement user-auth` → look for `task-memory/user-auth/`
+- **Task + step specified:** `/mema.implement user-auth step 3` → load that specific step
+- **No task specified:** `/mema.implement` → list active tasks from index.md and ask which one
+- **"all" modifier:** `/mema.implement user-auth all` → implement all remaining steps sequentially (see 2e)
 
 If the specified task directory doesn't exist:
-- Tell the user: "No plan found for '[task-name]'. Run `/plan [goal]` first to create an implementation plan."
+- Tell the user: "No plan found for '[task-name]'. Run `/mema.plan [goal]` first to create an implementation plan."
 - **Stop here.**
 
 ### 2b: Load Task Context
@@ -45,7 +45,7 @@ Read the task's files from `task-memory/[task-name]/`:
 2. **`status.md`** — current progress (which steps are done)
 3. **`context.md`** — exploration findings relevant to this task
 
-If `plan.md` is missing, tell the user: "Task directory exists but has no plan. Run `/plan [goal]` to create one."
+If `plan.md` is missing, tell the user: "Task directory exists but has no plan. Run `/mema.plan [goal]` to create one."
 
 ### 2c: Select Step
 
@@ -77,7 +77,7 @@ Follow the plan's specification for this step:
 
 ### 2e: Implement All Remaining (if requested)
 
-If the user requested "all" (e.g., `/implement user-auth all`):
+If the user requested "all" (e.g., `/mema.implement user-auth all`):
 
 1. Implement steps sequentially, starting from the first incomplete step
 2. After each step, verify before moving to the next
@@ -115,7 +115,7 @@ Suggested fix: [how to resolve]
 [====------] [completed]/[total] steps
 Next: Step [N+1] — [description]
 
-To continue: /implement [task-name]
+To continue: /mema.implement [task-name]
 ```
 
 ### 2g: Task Completion

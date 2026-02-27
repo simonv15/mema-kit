@@ -14,21 +14,21 @@ npx mema-kit
 
 # 2. Open Claude Code and bootstrap memory
 claude
-> /onboard
+> /mema.onboard
 
 # 3. Next session: load memory into context
-> /recall
+> /mema.recall
 ```
 
-`/onboard` scans your project, creates the `.mema/` memory structure, populates initial architecture and requirements docs, and configures CLAUDE.md and `.gitignore`. `/recall` loads that memory into any future session.
+`/mema.onboard` scans your project, creates the `.mema/` memory structure, populates initial architecture and requirements docs, and configures CLAUDE.md and `.gitignore`. `/mema.recall` loads that memory into any future session.
 
 ## Built-in Skills
 
 | Command | Purpose |
 |---------|---------|
-| `/onboard` | Bootstrap memory for a project — scans codebase, creates `.mema/`, populates initial knowledge |
-| `/recall` | Load project memory into the current session — instant context on cold start |
-| `/create-skill` | Generate a new memory-aware skill with the correct lifecycle phases |
+| `/mema.onboard` | Bootstrap memory for a project — scans codebase, creates `.mema/`, populates initial knowledge |
+| `/mema.recall` | Load project memory into the current session — instant context on cold start |
+| `/mema.create-skill` | Generate a new memory-aware skill with the correct lifecycle phases |
 
 ## How Memory Works
 
@@ -64,10 +64,10 @@ The protocol is defined in `_memory-protocol.md` and shared across all skills (n
 
 ## Building Your Own Skills
 
-Use `/create-skill` to generate memory-aware skills:
+Use `/mema.create-skill` to generate memory-aware skills:
 
 ```
-> /create-skill
+> /mema.create-skill
 
 Skill name: review
 Purpose: Review code changes for quality and consistency

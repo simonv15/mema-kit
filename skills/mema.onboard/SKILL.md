@@ -2,7 +2,7 @@
 description: Bootstrap the mema-kit memory system for this project. Creates .mema/ directory, scans the project, populates initial memory, and configures CLAUDE.md and .gitignore.
 ---
 
-# /onboard — Project Memory Bootstrap
+# /mema.onboard — Project Memory Bootstrap
 
 You are setting up the mema-kit memory system for this project. Follow these steps carefully. This command is idempotent — safe to re-run. Never overwrite existing data.
 
@@ -437,9 +437,9 @@ Include dev, test, build, and lint commands at minimum (if they exist). If no co
 If no skills are found (shouldn't happen since we just installed them, but as a fallback):
 
 ```
-- `/onboard` — Bootstrap the mema-kit memory system
-- `/recall` — Recall project memory into current session
-- `/create-skill` — Generate a new memory-aware skill
+- `/mema.onboard` — Bootstrap the mema-kit memory system
+- `/mema.recall` — Recall project memory into current session
+- `/mema.create-skill` — Generate a new memory-aware skill
 ```
 
 **Memory System:** Append the standard Memory System section (same text as Path A).
