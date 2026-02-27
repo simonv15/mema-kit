@@ -6,6 +6,12 @@ description: Generate a new memory-aware Claude Code skill. Creates a SKILL.md f
 
 You are creating a new Claude Code skill that integrates with mema-kit's memory protocol. Follow these steps carefully.
 
+## AUTO-LOAD
+
+1. Read `.mema/index.md` to understand current project state
+2. If `index.md` is missing or empty, run the **Rebuild Procedure** from `_memory-protocol.md`
+3. If `agent-memory/patterns.md` exists, read it — check what skills have already been created to avoid duplicating existing skill logic
+
 ## Step 1: Interview
 
 Gather the following from the user. Keep it to **2-3 exchanges max** — don't over-interview.
@@ -240,3 +246,20 @@ To use it:
 
 The skill follows the mema-kit memory protocol and will [read from / write to / read from and write to] .mema/ automatically.
 ```
+
+## AUTO-SAVE & CURATE
+
+Follow the curation rules in `_memory-protocol.md`.
+
+**If a skill file was written** (user did not CANCEL):
+- ADD/UPDATE `agent-memory/patterns.md` with a lightweight record: skill name, complexity level, one-sentence purpose, action taken (`created` / `enhanced` / `overwritten`), date (`YYYY-MM-DD`)
+
+**If no file was written** (user cancelled at any step):
+- NOOP — no memory changes
+
+## AUTO-INDEX
+
+Update `.mema/index.md`:
+1. Re-read the current index
+2. If `agent-memory/patterns.md` was modified, update its summary entry
+3. Update the `**Updated:**` date
