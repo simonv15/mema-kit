@@ -217,6 +217,17 @@ Update `.mema/index.md`:
 
 ---
 
+## Step 2.5: Draft Review
+
+Before writing any file to disk, show the user the complete generated SKILL.md for review.
+
+1. Render the full generated SKILL.md content inside a fenced code block
+2. Ask:
+   > "Does this look correct? Reply **APPROVE** to write the file, describe a specific change to revise, or **CANCEL** to exit without writing."
+3. **On a change request**: Apply the change to the named section only. Re-render the full draft. Repeat the prompt. If the user has requested more than 3 revisions, warn: "Multiple revisions requested. Consider re-running `/mema.create-skill` with a more detailed purpose." — then continue with the current draft.
+4. **On CANCEL**: Exit immediately. Do not write, create, or modify any files.
+5. **On APPROVE**: Proceed to Step 3.
+
 ## Step 3: Write the File
 
 1. Write the generated SKILL.md to `.claude/skills/[skill-name]/SKILL.md`
