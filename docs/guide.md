@@ -29,26 +29,26 @@ Think of it like a developer's notebook — it doesn't give you a bigger brain, 
 ```bash
 npx mema-kit          # install skills to .claude/skills/
 claude
-> /onboard            # scan project, create .mema/, populate initial memory
-> /recall             # next new session: load memory into context
+> /mema.onboard            # scan project, create .mema/, populate initial memory
+> /mema.recall             # next new session: load memory into context
 ```
 
-`/onboard` reads your package.json, README, directory structure, and representative source files, then writes real content to `architecture.md` and `requirements.md`. Idempotent — safe to re-run.
+`/mema.onboard` reads your package.json, README, directory structure, and representative source files, then writes real content to `architecture.md` and `requirements.md`. Idempotent — safe to re-run.
 
-`/recall` loads your project memory into the current session — use it at the start of every new conversation to restore context instantly.
+`/mema.recall` loads your project memory into the current session — use it at the start of every new conversation to restore context instantly.
 
 ---
 
-## Recalling Memory: /recall
+## Recalling Memory: /mema.recall
 
-Every new Claude Code session starts with a blank context. `/recall` fixes the cold-start problem by reading `.mema/` and printing a formatted summary into the conversation.
+Every new Claude Code session starts with a blank context. `/mema.recall` fixes the cold-start problem by reading `.mema/` and printing a formatted summary into the conversation.
 
 ### Modes
 
 | Mode | Command | What you get |
 |------|---------|--------------|
-| **Minimal** (default) | `/recall` or `/recall minimal` | Purpose, stack, architecture, current status, memory map |
-| **Full** | `/recall full` | Everything in Minimal + recent decisions, lessons, patterns, active context & plans |
+| **Minimal** (default) | `/mema.recall` or `/mema.recall minimal` | Purpose, stack, architecture, current status, memory map |
+| **Full** | `/mema.recall full` | Everything in Minimal + recent decisions, lessons, patterns, active context & plans |
 
 ### When to use which
 
@@ -60,20 +60,20 @@ Every new Claude Code session starts with a blank context. `/recall` fixes the c
 | Quick check on what decisions exist | Full |
 | Daily development work | Minimal |
 
-`/recall` is **read-only** — it never modifies memory files. Safe to run at any time.
+`/mema.recall` is **read-only** — it never modifies memory files. Safe to run at any time.
 
 ---
 
-## Planning Work: /plan
+## Planning Work: /mema.plan
 
-`/plan` takes a high-level goal, explores your codebase, and produces a structured implementation plan with step-by-step specs. Plans are saved to `.mema/task-memory/` so `/implement` can execute them.
+`/mema.plan` takes a high-level goal, explores your codebase, and produces a structured implementation plan with step-by-step specs. Plans are saved to `.mema/task-memory/` so `/mema.implement` can execute them.
 
 ### Usage
 
 ```
-> /plan add user authentication
-> /plan refactor the database layer
-> /plan add search functionality to the API
+> /mema.plan add user authentication
+> /mema.plan refactor the database layer
+> /mema.plan add search functionality to the API
 ```
 
 ### What it does
@@ -107,26 +107,26 @@ Follows the controller → service → repository pattern already in the codebas
 
 ---
 Plan saved to task-memory/user-authentication/
-To start implementing: /implement user-authentication
+To start implementing: /mema.implement user-authentication
 ```
 
 ### Revising plans
 
-If you run `/plan` for a task that already has a plan, it will offer to revise the existing plan rather than starting from scratch. This makes `/plan` idempotent — safe to re-run.
+If you run `/mema.plan` for a task that already has a plan, it will offer to revise the existing plan rather than starting from scratch. This makes `/mema.plan` idempotent — safe to re-run.
 
 ---
 
-## Implementing Plans: /implement
+## Implementing Plans: /mema.implement
 
-`/implement` picks up steps from an existing plan, implements them one at a time, verifies the result, and tracks progress. It's designed to give you control — one step at a time by default.
+`/mema.implement` picks up steps from an existing plan, implements them one at a time, verifies the result, and tracks progress. It's designed to give you control — one step at a time by default.
 
 ### Usage
 
 ```
-> /implement user-authentication          # implement next incomplete step
-> /implement user-authentication step 3   # implement a specific step
-> /implement user-authentication all      # implement all remaining steps
-> /implement                              # list active tasks, then pick one
+> /mema.implement user-authentication          # implement next incomplete step
+> /mema.implement user-authentication step 3   # implement a specific step
+> /mema.implement user-authentication all      # implement all remaining steps
+> /mema.implement                              # list active tasks, then pick one
 ```
 
 ### What it does
@@ -153,12 +153,12 @@ Verified: All tests passing (4 new tests)
 [====------] 2/5 steps
 Next: Step 3 — Create auth route handlers
 
-To continue: /implement user-authentication
+To continue: /mema.implement user-authentication
 ```
 
 ### Task completion
 
-When all steps are done, `/implement` offers to archive the task:
+When all steps are done, `/mema.implement` offers to archive the task:
 
 - Marks `status.md` as complete
 - Moves `task-memory/[task-name]/` to `archive/[task-name]/`
@@ -167,7 +167,7 @@ When all steps are done, `/implement` offers to archive the task:
 
 ### Learning from implementation
 
-After each step, `/implement` reflects on the work:
+After each step, `/mema.implement` reflects on the work:
 - Unexpected issues become **lessons** in `agent-memory/lessons.md`
 - Effective approaches become **patterns** in `agent-memory/patterns.md`
 - Decisions made during implementation are saved to `project-memory/decisions/`
@@ -178,20 +178,20 @@ This means your memory grows smarter with every implementation cycle.
 
 ## The plan → implement Workflow
 
-`/plan` and `/implement` form a complete spec-driven development workflow:
+`/mema.plan` and `/mema.implement` form a complete spec-driven development workflow:
 
 ```
-/plan                              /implement
+/mema.plan                              /mema.implement
   │                                    │
   ├─ reads:                            ├─ reads:
-  │   architecture                     │   plan.md (from /plan)
+  │   architecture                     │   plan.md (from /mema.plan)
   │   requirements                     │   status.md
   │   decisions                        │   context.md
   │   lessons & patterns               │   architecture, decisions
   │                                    │   lessons & patterns
   ├─ writes:                           │
   │   task-memory/[task]/context.md    ├─ writes:
-  │   task-memory/[task]/plan.md       │   status.md (mark steps done)
+  │   task-memory/[task]/mema.plan.md       │   status.md (mark steps done)
   │   task-memory/[task]/status.md     │   decisions/ (if any)
   │                                    │   lessons.md (if any)
   │                                    │   patterns.md (if any)
@@ -204,17 +204,17 @@ This means your memory grows smarter with every implementation cycle.
 
 ```bash
 # Session 1: Explore and plan
-> /recall                                    # load project context
-> /plan add user authentication              # explore codebase, produce plan
+> /mema.recall                                    # load project context
+> /mema.plan add user authentication              # explore codebase, produce plan
 
 # Session 2: Implement (pick up where you left off)
-> /recall                                    # load context + active tasks
-> /implement user-authentication             # implement step 1
-> /implement user-authentication             # implement step 2
+> /mema.recall                                    # load context + active tasks
+> /mema.implement user-authentication             # implement step 1
+> /mema.implement user-authentication             # implement step 2
 
 # Session 3: Finish up
-> /recall
-> /implement user-authentication all         # implement remaining steps
+> /mema.recall
+> /mema.implement user-authentication all         # implement remaining steps
 # → task archived, lessons saved
 ```
 
@@ -222,12 +222,12 @@ This means your memory grows smarter with every implementation cycle.
 
 ## Extending with Custom Skills
 
-mema-kit ships with five built-in skills (`/onboard`, `/recall`, `/plan`, `/implement`, `/create-skill`). You can create your own skills to extend the workflow.
+mema-kit ships with five built-in skills (`/mema.onboard`, `/mema.recall`, `/mema.plan`, `/mema.implement`, `/mema.create-skill`). You can create your own skills to extend the workflow.
 
 ### Example: Create `/explore`
 
 ```
-> /create-skill
+> /mema.create-skill
   Name: explore
   Purpose: Research technical decisions and save findings
   Complexity: standard
@@ -248,12 +248,12 @@ The agent loads your stack from memory, researches JWT vs sessions vs OAuth, and
   → "JWT with refresh tokens. Why: stateless, fits our REST API, team has experience."
 ```
 
-Next session, any skill that loads memory will know this decision exists — including `/plan`, which can incorporate it into implementation plans.
+Next session, any skill that loads memory will know this decision exists — including `/mema.plan`, which can incorporate it into implementation plans.
 
 ### How custom skills connect with built-ins
 
 ```
-/explore          /plan             /implement
+/explore          /mema.plan             /mema.implement
    │                 │                  │
    ├─ reads:         ├─ reads:          ├─ reads:
    │  architecture   │  architecture    │  plan
@@ -270,7 +270,7 @@ Next session, any skill that loads memory will know this decision exists — inc
 
 Each skill reads what previous skills wrote. The index ties it all together.
 
-> **Tip:** Start every new session with `/recall` to load project context before using other skills. It takes seconds and saves minutes of re-exploration.
+> **Tip:** Start every new session with `/mema.recall` to load project context before using other skills. It takes seconds and saves minutes of re-exploration.
 
 ---
 
@@ -322,5 +322,5 @@ The index is a **rebuildable cache** — if it gets out of sync, the next skill 
 - **Memory is just markdown.** Open any file to see what the agent knows. Edit directly if something's wrong.
 - **`.mema/` is gitignored by default.** To share decisions with your team, uncomment `!.mema/project-memory/` in `.gitignore`.
 - **Curate, don't hoard.** The value of memory is its signal-to-noise ratio. Prune aggressively.
-- **Any skill can use the protocol.** Use `/create-skill` or manually follow the 4-phase lifecycle.
-- **One step at a time.** `/implement` defaults to one step per invocation. This gives you a chance to review each change before continuing.
+- **Any skill can use the protocol.** Use `/mema.create-skill` or manually follow the 4-phase lifecycle.
+- **One step at a time.** `/mema.implement` defaults to one step per invocation. This gives you a chance to review each change before continuing.

@@ -8,7 +8,7 @@ Prefer well-commented code over terse code.
 
 ## Project Overview
 
-mema-kit is a memory protocol kit for Claude Code skills. It provides a `.mema/` memory system that persists curated knowledge (architecture, decisions, lessons, patterns) across sessions, plus five built-in skills: `/onboard` (bootstrap memory for a project), `/recall` (load memory into current session), `/plan` (break goals into implementation specs), `/implement` (execute plan steps one at a time), and `/create-skill` (generate new memory-aware skills).
+mema-kit is a memory protocol kit for Claude Code skills. It provides a `.mema/` memory system that persists curated knowledge (architecture, decisions, lessons, patterns) across sessions, plus five built-in skills: `/mema.onboard` (bootstrap memory for a project), `/mema.recall` (load memory into current session), `/mema.plan` (break goals into implementation specs), `/mema.implement` (execute plan steps one at a time), and `/mema.create-skill` (generate new memory-aware skills).
 
 The core innovation is the **memory protocol** — a 4-phase lifecycle (AUTO-LOAD → WORK → AUTO-SAVE & CURATE → AUTO-INDEX) that any skill can plug into.
 
@@ -19,12 +19,12 @@ mema-kit/
 ├── bin/cli.js                    # npx mema-kit CLI (copies skills to user projects)
 ├── skills/                       # Single source of truth for all distribution channels
 │   ├── _memory-protocol.md       # Shared ADD/UPDATE/DELETE/NOOP curation rules
-│   ├── onboard/SKILL.md          # /onboard — project memory bootstrap
-│   ├── recall/SKILL.md           # /recall — session memory recall
-│   ├── plan/SKILL.md             # /plan — break goals into implementation specs
-│   ├── implement/SKILL.md        # /implement — execute plan steps one at a time
-│   └── create-skill/SKILL.md     # /create-skill — generate memory-aware skills
-├── templates/                    # .mema/ memory file templates (copied by /onboard)
+│   ├── mema.onboard/SKILL.md     # /mema.onboard — project memory bootstrap
+│   ├── mema.recall/SKILL.md      # /mema.recall — session memory recall
+│   ├── mema.plan/SKILL.md        # /mema.plan — break goals into implementation specs
+│   ├── mema.implement/SKILL.md   # /mema.implement — execute plan steps one at a time
+│   └── mema.create-skill/SKILL.md # /mema.create-skill — generate memory-aware skills
+├── templates/                    # .mema/ memory file templates (copied by /mema.onboard)
 │   ├── index.md, decision.md, context.md, plan.md, lessons.md, patterns.md, status.md
 ├── package.json                  # npm package (bin → cli.js, zero runtime deps)
 └── docs/
@@ -33,7 +33,7 @@ mema-kit/
 
 ## Architecture
 
-**Five built-in skills** form the starting point: `/onboard` bootstraps memory for a project (scans codebase, populates initial knowledge), `/recall` loads memory into the current session (read-only summary for cold-start), `/plan` breaks high-level goals into structured implementation specs (saved to task-memory/), `/implement` executes plan steps one at a time with verification and progress tracking, and `/create-skill` generates new memory-aware skills at three complexity levels (simple, standard, advanced).
+**Five built-in skills** form the starting point: `/mema.onboard` bootstraps memory for a project (scans codebase, populates initial knowledge), `/mema.recall` loads memory into the current session (read-only summary for cold-start), `/mema.plan` breaks high-level goals into structured implementation specs (saved to task-memory/), `/mema.implement` executes plan steps one at a time with verification and progress tracking, and `/mema.create-skill` generates new memory-aware skills at three complexity levels (simple, standard, advanced).
 
 **Memory system** (`.mema/` directory in user projects):
 - `index.md` is a rebuildable cache (pointer map), not source of truth. Skills rebuild it from directory scan if missing.
@@ -41,7 +41,7 @@ mema-kit/
 - All memory operations use Claude Code's native Read/Write tools — no external dependencies.
 - `_memory-protocol.md` is shared across all skills (DRY). Each SKILL.md references it rather than duplicating curation rules.
 
-**Distribution** is multi-channel but converges: `npx mema-kit` installs skills to `.claude/skills/`, then user runs `/onboard` for project setup. "Install the tool" and "set up the project" are deliberately separate.
+**Distribution** is multi-channel but converges: `npx mema-kit` installs skills to `.claude/skills/`, then user runs `/mema.onboard` for project setup. "Install the tool" and "set up the project" are deliberately separate.
 
 ## Key Conventions
 
@@ -59,3 +59,10 @@ This project uses mema-kit for persistent memory across sessions.
 Memory lives in `.mema/`. At the start of each task, read `.mema/index.md` to load relevant context. After completing work, curate and save knowledge following the memory protocol in `.claude/skills/_memory-protocol.md`.
 
 Memory is managed automatically by skills — do not manually modify `.mema/` files unless correcting an error.
+
+## Active Technologies
+- Node.js ≥ 16.7.0 (cli.js), Markdown (all skill files) + None — Node.js `fs`/`path` built-ins only (001-rename-skills)
+- Files (markdown in `skills/`, `docs/`, `bin/`) (001-rename-skills)
+
+## Recent Changes
+- 001-rename-skills: Added Node.js ≥ 16.7.0 (cli.js), Markdown (all skill files) + None — Node.js `fs`/`path` built-ins only
