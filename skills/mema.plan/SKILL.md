@@ -1,18 +1,18 @@
 ---
-description: Break a high-level goal into a structured implementation plan. Explores the codebase, produces step-by-step specs, and saves them to task-memory/ for use by /implement.
+description: Break a high-level goal into a structured implementation plan. Explores the codebase, produces step-by-step specs, and saves them to task-memory/ for use by /mema.implement.
 ---
 
-# /plan — Implementation Planning
+# /mema.plan — Implementation Planning
 
-You are executing the /plan skill. Follow these steps carefully.
+You are executing the /mema.plan skill. Follow these steps carefully.
 
-This skill takes a user's goal (e.g., `/plan add user authentication`), explores the codebase, and produces a detailed implementation plan saved to `.mema/task-memory/[task-name]/`.
+This skill takes a user's goal (e.g., `/mema.plan add user authentication`), explores the codebase, and produces a detailed implementation plan saved to `.mema/task-memory/[task-name]/`.
 
 ## Phase 1: AUTO-LOAD
 
 1. Read `.mema/index.md` to understand current project state
 2. If `index.md` is missing or `.mema/` does not exist:
-   - Tell the user: "No memory found. Run `/onboard` first to set up mema-kit for this project."
+   - Tell the user: "No memory found. Run `/mema.onboard` first to set up mema-kit for this project."
    - **Stop here** — do not continue to further steps.
 3. If `index.md` is empty, run the **Rebuild Procedure** from `_memory-protocol.md`
 4. Load relevant memory files:
@@ -28,10 +28,10 @@ Read only what's needed — don't load everything.
 
 ### 2a: Parse the Goal
 
-Extract the task goal from the user's input. The goal is everything after `/plan`.
+Extract the task goal from the user's input. The goal is everything after `/mema.plan`.
 
-- Example: `/plan add user authentication` → goal is "add user authentication"
-- Example: `/plan refactor the database layer` → goal is "refactor the database layer"
+- Example: `/mema.plan add user authentication` → goal is "add user authentication"
+- Example: `/mema.plan refactor the database layer` → goal is "refactor the database layer"
 
 If no goal is provided, ask the user: "What would you like to plan? Describe your goal in a sentence or two."
 
@@ -78,11 +78,11 @@ Using your exploration findings and loaded memory, produce the plan in three par
 **Detailed Steps** — Step-by-step implementation specs. Each step must include:
 - **Action:** What to do (create file, modify function, add test, etc.)
 - **Files:** Specific file paths to create or modify
-- **Details:** Enough detail that `/implement` can execute the step without ambiguity
+- **Details:** Enough detail that `/mema.implement` can execute the step without ambiguity
 - **Dependencies:** Which prior steps must be complete first (if any)
 
 Rules for steps:
-- Each step should be small enough to implement in a single `/implement` invocation
+- Each step should be small enough to implement in a single `/mema.implement` invocation
 - Order steps logically (foundations first, then features, then tests, then cleanup)
 - Be specific about file paths — use the actual paths discovered during exploration
 - Include test steps where appropriate (not just at the end)
@@ -180,7 +180,7 @@ Print a summary to the user:
 
 ---
 Plan saved to task-memory/[task-name]/
-To start implementing: /implement [task-name]
+To start implementing: /mema.implement [task-name]
 ```
 
 ## Phase 3: AUTO-SAVE & CURATE

@@ -2,9 +2,9 @@
 description: Recall project memory into the current session. Loads .mema/ knowledge (architecture, decisions, lessons, patterns) and prints a formatted summary. Use at the start of a session to restore context.
 ---
 
-# /recall — Session Memory Recall
+# /mema.recall — Session Memory Recall
 
-You are executing the /recall skill. This is a **read-only** skill — it loads memory and prints a summary into the conversation. It never writes to any files.
+You are executing the /mema.recall skill. This is a **read-only** skill — it loads memory and prints a summary into the conversation. It never writes to any files.
 
 Follow these steps carefully.
 
@@ -23,7 +23,7 @@ If the user provides an unrecognized argument (not `minimal`, `full`, or empty):
 
 1. Read `.mema/index.md`
 2. If `index.md` is missing or `.mema/` does not exist:
-   - Tell the user: "No memory found. Run `/onboard` first to set up mema-kit for this project."
+   - Tell the user: "No memory found. Run `/mema.onboard` first to set up mema-kit for this project."
    - **Stop here** — do not continue to further steps.
 3. Parse the index to identify available memory files and their summaries.
 
@@ -85,7 +85,7 @@ Use the format below based on the current mode.
 - Agent Lessons: [N] lessons, [N] patterns
 
 ---
-*Showing minimal recall. Use `/recall full` for decisions, lessons, and patterns.*
+*Showing minimal recall. Use `/mema.recall full` for decisions, lessons, and patterns.*
 ```
 
 ---
@@ -132,4 +132,4 @@ Use the format below based on the current mode.
 
 ---
 
-**Important:** This skill is purely informational. If you notice memory files are missing or out of date, suggest the user run `/onboard` or the relevant skill — do not attempt to fix memory yourself.
+**Important:** This skill is purely informational. If you notice memory files are missing or out of date, suggest the user run `/mema.onboard` or the relevant skill — do not attempt to fix memory yourself.

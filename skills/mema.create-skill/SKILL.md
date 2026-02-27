@@ -2,7 +2,7 @@
 description: Generate a new memory-aware Claude Code skill. Creates a SKILL.md file with the correct memory lifecycle phases based on the skill's complexity.
 ---
 
-# /create-skill — Generate Memory-Aware Skills
+# /mema.create-skill — Generate Memory-Aware Skills
 
 You are creating a new Claude Code skill that integrates with mema-kit's memory protocol. Follow these steps carefully.
 
@@ -48,7 +48,7 @@ You are executing the /[skill-name] skill. Follow these steps carefully.
 ## Phase 1: AUTO-LOAD
 
 1. Read `.mema/index.md` to understand current project state
-2. If `index.md` is missing or empty, inform the user to run `/onboard` first
+2. If `index.md` is missing or empty, inform the user to run `/mema.onboard` first
 3. Based on the user's request, identify and read relevant memory files
 4. Read only what's needed — don't load everything
 
