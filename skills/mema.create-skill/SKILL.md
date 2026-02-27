@@ -16,9 +16,13 @@ You are creating a new Claude Code skill that integrates with mema-kit's memory 
 
 Gather the following from the user. Keep it to **2-3 exchanges max** — don't over-interview.
 
+### Name validation (apply before asking anything else if name is already provided):
+- If the name matches a reserved built-in (`mema.onboard`, `mema.recall`, `mema.plan`, `mema.implement`, `mema.create-skill`), warn: "This name matches a built-in mema-kit skill. Using it in `.claude/skills/` will shadow the built-in. Continue? (yes/no)"
+- If the name is not kebab-case, convert it automatically and inform the user: "Name converted to kebab-case: [converted-name]"
+
 ### Required:
-1. **Skill name** — kebab-case (e.g., `review`, `debug`, `migrate`). If the user gives a name with spaces or camelCase, convert it.
-2. **Purpose** — What does this skill do? One sentence is enough.
+1. **Skill name** — kebab-case (e.g., `review`, `debug`, `migrate`).
+2. **Purpose** — What does this skill do? One sentence is enough. If the answer is a single word or fewer than 5 characters, ask one follow-up question to expand it before proceeding.
 
 ### Optional (offer sensible defaults):
 3. **Memory needs** — Does this skill need to:
@@ -230,9 +234,30 @@ Before writing any file to disk, show the user the complete generated SKILL.md f
 
 ## Step 3: Write the File
 
-1. Write the generated SKILL.md to `.claude/skills/[skill-name]/SKILL.md`
-2. Create the directory if it doesn't exist
-3. If the file already exists, warn the user and ask before overwriting
+### Existence check
+
+Before writing, check whether `.claude/skills/[skill-name]/SKILL.md` already exists.
+
+**If the file does NOT exist:**
+1. Create the directory `.claude/skills/[skill-name]/` if it doesn't exist
+2. Write the approved content to `.claude/skills/[skill-name]/SKILL.md`
+
+**If the file EXISTS:**
+1. Read the existing file; extract the `description` frontmatter value and all `## Phase`, `## Step`, and `## AUTO-*` headings (headings only, not body content)
+2. Show the user:
+   ```
+   Existing skill found: /[skill-name]
+   Description: [existing description]
+   Sections: [list of headings]
+
+   Choose an action:
+   (1) Enhance existing — apply a described change to specific sections
+   (2) Overwrite — start fresh (goes through preview)
+   (3) Cancel — exit without changes
+   ```
+3. **Option 1 — Enhance**: Ask "What specifically should I change?" Apply the directive to the named section(s) only, preserving everything else. Run the modified file through the Step 2.5 Draft Review flow, then write on APPROVE.
+4. **Option 2 — Overwrite**: Discard the existing content. Return to Step 1 and run the full interview → generation → preview flow from scratch.
+5. **Option 3 — Cancel**: Exit. No file changes.
 
 ## Step 4: Verify
 
@@ -242,6 +267,7 @@ Read back the file you just wrote and confirm:
 - Memory file paths use `.mema/` (not `.praxis/` or any other prefix)
 - The skill references `_memory-protocol.md` for curation rules (standard and advanced only)
 - No memory protocol content is duplicated inside the skill
+- No `[…]`-style placeholder text remains
 
 ## Step 5: Confirm
 
