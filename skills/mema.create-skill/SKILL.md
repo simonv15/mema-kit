@@ -34,9 +34,25 @@ If the user doesn't specify memory needs or complexity, default to **both** and 
 
 ## Step 2: Generate SKILL.md
 
-Based on the interview answers, generate a SKILL.md file. Use the appropriate template below based on complexity level.
+Based on the interview answers, generate a SKILL.md file using the appropriate template below.
 
 **Critical rule:** Generated skills reference `_memory-protocol.md` for curation rules. NEVER duplicate the memory protocol content inside generated skills.
+
+### Generating the WORK phase (applies to all templates):
+
+When filling the WORK phase of any template:
+1. **Decompose the purpose** into 2–5 concrete developer actions — ask yourself: "what would a skilled developer do, step by step, to accomplish [purpose]?"
+2. **Write each action** as an imperative instruction sentence (e.g., "Read each changed file and identify…"; "Compare findings against…"; "Write a summary of…")
+3. **If the purpose has multiple distinct concerns** (multiple verbs, the word "and", or conditional logic) — organize into sub-sections: `### 2a: [First concern]`, `### 2b: [Second concern]`
+
+### Generating AUTO-LOAD hints (standard and advanced templates):
+
+Scan the purpose for domain keywords and replace the `[Add or remove entries…]` placeholder with relevant `.mema/` paths:
+- Always include: `project-memory/architecture.md` — technical context; `agent-memory/lessons.md` — mistakes to avoid
+- "decide / choose / compare / evaluate" → add `project-memory/decisions/` — past decisions on this domain
+- "pattern / reuse / template" → add `agent-memory/patterns.md` — reusable approaches
+- "implement / build / create / migrate" → add active `task-memory/[task-name]/` if one exists in the index
+- "test / validate / check / audit" → note in `agent-memory/lessons.md` entry that testing lessons are especially relevant
 
 ---
 
@@ -60,13 +76,9 @@ You are executing the /[skill-name] skill. Follow these steps carefully.
 
 ## Phase 2: WORK
 
-[Core skill logic goes here — describe what the skill does step by step]
+[Generate 2–5 concrete steps from the purpose — no placeholder text]
 
-1. [First action]
-2. [Second action]
-3. [Third action]
-
-Use the loaded memory context to inform your work. Reference architecture decisions, past lessons, and patterns where relevant.
+Use the loaded memory context to inform your work.
 
 ## Phase 3: REPORT
 
@@ -99,18 +111,12 @@ You are executing the /[skill-name] skill. Follow these steps carefully.
 
 **Relevant memory for this skill:**
 - `project-memory/architecture.md` — for technical context
-- `project-memory/decisions/` — for past decisions related to this work
 - `agent-memory/lessons.md` — for mistakes to avoid
-- `agent-memory/patterns.md` — for reusable approaches
-- [Add or remove entries based on the skill's purpose]
+[Derive additional entries from purpose keywords per Step 2 generation instructions]
 
 ## Phase 2: WORK
 
-[Core skill logic goes here — describe what the skill does step by step]
-
-1. [First action]
-2. [Second action]
-3. [Third action]
+[Generate 2–5 concrete steps from the purpose — no placeholder text]
 
 Use the loaded memory context to inform your work.
 
@@ -170,11 +176,7 @@ If a task directory exists, read the current status and continue where you left 
 
 ### 2b: Core Work
 
-[Core skill logic goes here — describe what the skill does step by step]
-
-1. [First action]
-2. [Second action]
-3. [Third action]
+[Generate 2–5 concrete steps from the purpose — no placeholder text]
 
 Track progress by updating `task-memory/[task-name]/status.md` as you go.
 
