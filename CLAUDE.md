@@ -61,8 +61,8 @@ Memory lives in `.mema/`. At the start of each task, read `.mema/index.md` to lo
 Memory is managed automatically by skills — do not manually modify `.mema/` files unless correcting an error.
 
 ## Active Technologies
-- Node.js ≥ 16.7.0 (cli.js), Markdown (all skill files) + None — Node.js `fs`/`path` built-ins only (001-rename-skills)
-- Files (markdown in `skills/`, `docs/`, `bin/`) (001-rename-skills)
+- Node.js ≥ 16.7.0 (cli.js), Markdown (all skill files), Claude Code WebSearch tool (mema.research)
+- Files: markdown in `skills/`, `docs/`, `bin/`, `templates/`
 
 ## Recent Changes
-- 001-rename-skills: Added Node.js ≥ 16.7.0 (cli.js), Markdown (all skill files) + None — Node.js `fs`/`path` built-ins only
+- 002-expand-lifecycle: Added 7 new skills (mema.seed, mema.clarify, mema.research, mema.challenge, mema.roadmap, mema.specify, mema.tasks); restructured `.mema/` to `product/`, `features/`, `project/`, `agent/`; updated 5 existing skills; rewrote docs/guide.md for full lifecycle
