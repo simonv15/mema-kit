@@ -10,7 +10,7 @@ You are creating a new Claude Code skill that integrates with mema-kit's memory 
 
 1. Read `.mema/index.md` to understand current project state
 2. If `index.md` is missing or empty, run the **Rebuild Procedure** from `_memory-protocol.md`
-3. If `agent-memory/patterns.md` exists, read it — check what skills have already been created to avoid duplicating existing skill logic
+3. If `agent/patterns.md` exists, read it — check what skills have already been created to avoid duplicating existing skill logic
 
 ## Step 1: Interview
 
@@ -52,11 +52,11 @@ When filling the WORK phase of any template:
 ### Generating AUTO-LOAD hints (standard and advanced templates):
 
 Scan the purpose for domain keywords and replace the `[Add or remove entries…]` placeholder with relevant `.mema/` paths:
-- Always include: `project-memory/architecture.md` — technical context; `agent-memory/lessons.md` — mistakes to avoid
-- "decide / choose / compare / evaluate" → add `project-memory/decisions/` — past decisions on this domain
-- "pattern / reuse / template" → add `agent-memory/patterns.md` — reusable approaches
-- "implement / build / create / migrate" → add active `task-memory/[task-name]/` if one exists in the index
-- "test / validate / check / audit" → note in `agent-memory/lessons.md` entry that testing lessons are especially relevant
+- Always include: `project/architecture.md` — technical context; `agent/lessons.md` — mistakes to avoid
+- "decide / choose / compare / evaluate" → add `project/decisions/` — past decisions on this domain
+- "pattern / reuse / template" → add `agent/patterns.md` — reusable approaches
+- "implement / build / create / migrate" → add active `features/[feature-name]/` if one exists in the index
+- "test / validate / check / audit" → note in `agent/lessons.md` entry that testing lessons are especially relevant
 
 ---
 
@@ -114,8 +114,8 @@ You are executing the /[skill-name] skill. Follow these steps carefully.
 4. Read only what's needed — don't load everything
 
 **Relevant memory for this skill:**
-- `project-memory/architecture.md` — for technical context
-- `agent-memory/lessons.md` — for mistakes to avoid
+- `project/architecture.md` — for technical context
+- `agent/lessons.md` — for mistakes to avoid
 [Derive additional entries from purpose keywords per Step 2 generation instructions]
 
 ## Phase 2: WORK
@@ -128,10 +128,10 @@ Use the loaded memory context to inform your work.
 
 Follow the curation rules in `_memory-protocol.md`. For each piece of knowledge produced:
 
-- **Decisions made** → ADD to `project-memory/decisions/YYYY-MM-DD-short-name.md`
-- **Architecture changes** → UPDATE `project-memory/architecture.md`
-- **Lessons learned** → ADD/UPDATE `agent-memory/lessons.md`
-- **Patterns discovered** → ADD/UPDATE `agent-memory/patterns.md`
+- **Decisions made** → ADD to `project/decisions/YYYY-MM-DD-short-name.md`
+- **Architecture changes** → UPDATE `project/architecture.md`
+- **Lessons learned** → ADD/UPDATE `agent/lessons.md`
+- **Patterns discovered** → ADD/UPDATE `agent/patterns.md`
 - **Exploration findings** → ADD to appropriate `task-memory/` or `project-memory/` file
 
 Apply ADD/UPDATE/DELETE/NOOP to each memory file. Most files will be NOOP.
@@ -164,16 +164,16 @@ You are executing the /[skill-name] skill. Follow these steps carefully.
 1. Read `.mema/index.md` to understand current project state
 2. If `index.md` is missing or empty, run the **Rebuild Procedure** from `_memory-protocol.md`
 3. Based on the user's request, identify and read relevant memory files:
-   - Task-specific: `task-memory/[task-name]/` (context, plan, status)
-   - Project-wide: `project-memory/architecture.md`, relevant decisions
-   - Agent knowledge: `agent-memory/lessons.md`, `agent-memory/patterns.md`
+   - Task-specific: `features/[feature-name]/` (context, plan, status)
+   - Project-wide: `project/architecture.md`, relevant decisions
+   - Agent knowledge: `agent/lessons.md`, `agent/patterns.md`
 4. Read only what's needed — don't load everything
 
 ## Phase 2: WORK
 
 ### 2a: Task Setup
 If no task directory exists for this work:
-1. Create `task-memory/[task-name]/`
+1. Create `features/[feature-name]/`
 2. Write initial `context.md` with the task description and relevant findings
 
 If a task directory exists, read the current status and continue where you left off.
@@ -182,7 +182,7 @@ If a task directory exists, read the current status and continue where you left 
 
 [Generate 2–5 concrete steps from the purpose — no placeholder text]
 
-Track progress by updating `task-memory/[task-name]/status.md` as you go.
+Track progress by updating `features/[feature-name]/status.md` as you go.
 
 ### 2c: Learn
 
@@ -195,18 +195,18 @@ After completing work, reflect:
 
 Follow the curation rules in `_memory-protocol.md`. For each piece of knowledge produced:
 
-- **Decisions made** → ADD to `project-memory/decisions/YYYY-MM-DD-short-name.md`
-- **Architecture changes** → UPDATE `project-memory/architecture.md`
-- **Lessons learned** → ADD/UPDATE `agent-memory/lessons.md`
-- **Patterns discovered** → ADD/UPDATE `agent-memory/patterns.md`
-- **Task progress** → UPDATE `task-memory/[task-name]/status.md`
+- **Decisions made** → ADD to `project/decisions/YYYY-MM-DD-short-name.md`
+- **Architecture changes** → UPDATE `project/architecture.md`
+- **Lessons learned** → ADD/UPDATE `agent/lessons.md`
+- **Patterns discovered** → ADD/UPDATE `agent/patterns.md`
+- **Task progress** → UPDATE `features/[feature-name]/status.md`
 
 Apply ADD/UPDATE/DELETE/NOOP to each memory file. Most files will be NOOP.
 
 ### Task Completion
 If the task is fully complete:
-1. Mark `task-memory/[task-name]/status.md` as `**Status:** complete`
-2. Move `task-memory/[task-name]/` to `archive/[task-name]/`
+1. Mark `features/[feature-name]/status.md` as `**Status:** complete`
+2. Move `features/[feature-name]/` to `archive/[task-name]/`
 3. Remove the task from "Active Tasks" in `index.md`
 
 ## Phase 4: AUTO-INDEX
@@ -291,7 +291,7 @@ The skill follows the mema-kit memory protocol and will [read from / write to / 
 Follow the curation rules in `_memory-protocol.md`.
 
 **If a skill file was written** (user did not CANCEL):
-- ADD/UPDATE `agent-memory/patterns.md` with a lightweight record: skill name, complexity level, one-sentence purpose, action taken (`created` / `enhanced` / `overwritten`), date (`YYYY-MM-DD`)
+- ADD/UPDATE `agent/patterns.md` with a lightweight record: skill name, complexity level, one-sentence purpose, action taken (`created` / `enhanced` / `overwritten`), date (`YYYY-MM-DD`)
 
 **If no file was written** (user cancelled at any step):
 - NOOP — no memory changes
@@ -300,5 +300,5 @@ Follow the curation rules in `_memory-protocol.md`.
 
 Update `.mema/index.md`:
 1. Re-read the current index
-2. If `agent-memory/patterns.md` was modified, update its summary entry
+2. If `agent/patterns.md` was modified, update its summary entry
 3. Update the `**Updated:**` date

@@ -63,23 +63,28 @@ Update `.mema/index.md` to reflect all changes made in Phase 3. This is **mandat
 
 ## Per-File-Type Curation Rules
 
-### decision.md — Conservative curation
+### product/ files — Discovery phase outputs (seed, clarify, research, challenge, roadmap)
+- **Overwrite on re-run.** Each file represents the current state of understanding. Re-running a discovery skill replaces stale content with fresh analysis.
+- **NOOP** if the file is recent and the idea hasn't changed.
+- `roadmap.md` is special: UPDATE to add new features, but never delete existing feature entries — features with directories already created should be marked, not removed.
+
+### features/NNN-name/ files — Feature lifecycle files (spec, plan, tasks, status)
+- `spec.md` — **UPDATE** when requirements change; never delete a spec that has a corresponding plan.
+- `plan.md` — **Replace curation**: keep final version only; overwrite on re-run.
+- `tasks.md` — **Replace curation**: regenerate when plan changes; warn if tasks are partially complete.
+- `status.md` — **UPDATE** continuously during implementation; never delete.
+
+### project/decisions/ — Conservative curation
 - **Rarely delete.** Decisions are historical record. Even reversed decisions teach future sessions why something didn't work.
 - **UPDATE** when the decision is refined, expanded, or its status changes.
 - **ADD** reasoning if the original entry lacks a "why."
 - Only **DELETE** if the decision was recorded in error (wrong project, duplicate entry).
 
-### context.md — Aggressive curation
-- **Prune dead-end explorations.** If you explored 5 options and chose 1, delete the notes on the 4 rejected options. The decision file captures what was chosen and why.
-- **Consolidate findings.** If multiple explorations cover overlapping ground, merge them into one concise context file.
-- **DELETE** when a decision supersedes the exploration entirely (the exploration's value is now captured in the decision).
+### project/architecture.md and project/requirements.md — Replace curation
+- **UPDATE** when the stack or requirements change.
+- Keep current state only — these are reference documents, not history logs.
 
-### plan.md — Replace curation
-- **Keep the final version only.** Draft plans are noise once a final plan exists.
-- **UPDATE** during implementation — mark steps as complete, note adjustments.
-- **Do not create multiple plan versions.** Overwrite the plan when it changes.
-
-### lessons.md and patterns.md — Consolidation curation
+### agent/lessons.md and agent/patterns.md — Consolidation curation
 - **Merge similar lessons.** "Drizzle needs type casting" and "Drizzle enum handling requires explicit cast" are the same lesson — keep one entry with both examples.
 - **UPDATE** with new examples when the same pattern/lesson recurs.
 - **DELETE** if a lesson is proven wrong by later experience.
@@ -107,22 +112,24 @@ The index is a structured pointer map with four sections:
 ```
 # Memory Index
 
-**Updated:** 2026-02-23
+**Updated:** 2026-02-27
 
-## Active Tasks
-- `task-memory/api-setup/` — Setting up REST API with Fastify (plan ready, implementing)
+## Active Features
+- `features/001-user-auth/` — JWT authentication for API (in-progress, step 2/5)
+- `features/002-search/` — Full-text search across posts (pending)
+
+## Product Discovery
+- `product/seed.md` — Async standup tool for remote teams
+- `product/roadmap.md` — 6 features defined, 1 in progress
 
 ## Project Knowledge
-- `project-memory/architecture.md` — Node.js + Fastify + PostgreSQL + Drizzle stack
-- `project-memory/requirements.md` — Core requirements and constraints
+- `project/architecture.md` — Node.js + Fastify + PostgreSQL + Drizzle stack
+- `project/requirements.md` — Core requirements and constraints
+- `project/decisions/2026-02-27-auth-jwt.md` — JWT with refresh tokens for auth
 
-## Recent Decisions
-- `project-memory/decisions/2026-02-23-tech-stack.md` — Chose Fastify + PostgreSQL + Drizzle
-- `project-memory/decisions/2026-02-23-auth-jwt.md` — JWT with refresh tokens for auth
-
-## Agent Lessons
-- `agent-memory/lessons.md` — 3 lessons recorded (Drizzle type casting, Fastify plugin order, test isolation)
-- `agent-memory/patterns.md` — 2 patterns recorded (route registration, error handling middleware)
+## Agent Knowledge
+- `agent/lessons.md` — 4 lessons recorded
+- `agent/patterns.md` — 3 patterns recorded
 ```
 
 Each entry is: `- \`file-path\` — one-line summary`
@@ -137,8 +144,8 @@ After every curated save:
 
 ### Rebuild Procedure (fallback)
 If `index.md` is missing, empty, or clearly stale (references files that don't exist):
-1. List all directories in `.mema/`: `project-memory/`, `task-memory/`, `agent-memory/`, `archive/`
-2. For each directory, list all `.md` files (excluding `_templates/`)
+1. List all directories in `.mema/`: `product/`, `features/`, `project/`, `agent/`, `archive/`
+2. For each directory, list all `.md` files
 3. Read the first 3 lines of each file to get title and metadata
 4. Generate index entries in the format above
 5. Write the rebuilt `index.md`

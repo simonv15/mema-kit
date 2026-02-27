@@ -1,184 +1,167 @@
 ---
-description: Execute implementation plan steps one at a time. Picks up the next step from an existing plan, implements it, verifies the result, and tracks progress. Run /mema.plan first to create a plan.
+description: Execute implementation plan steps one at a time. Picks up the next step from an existing feature plan, implements it, verifies the result, and tracks progress. Run /mema.plan first to create a plan.
 ---
 
-# /mema.implement — Plan Step Execution
+# /mema.implement — Feature Step Execution
 
 You are executing the /mema.implement skill. Follow these steps carefully.
 
-This skill picks up a step from an existing plan (created by `/mema.plan`), implements it, verifies the result, and updates progress tracking. By default, it implements **one step at a time** to give the user control over the process.
+This skill picks up a step from an existing feature plan (created by `/mema.plan`), implements it, verifies the result, and updates progress tracking. By default, it implements **one step at a time** to give the user control.
 
 ## Phase 1: AUTO-LOAD
 
 1. Read `.mema/index.md` to understand current project state
 2. If `index.md` is missing or `.mema/` does not exist:
-   - Tell the user: "No memory found. Run `/mema.onboard` first to set up mema-kit for this project."
-   - **Stop here** — do not continue to further steps.
+   - Tell the user: "No memory found. Run `/mema.onboard` first."
+   - **Stop here.**
 3. If `index.md` is empty, run the **Rebuild Procedure** from `_memory-protocol.md`
-4. Scan `## Active Tasks` in `index.md` to find tasks with plans
-5. Load relevant memory files:
-   - `project-memory/architecture.md` — for technical context during implementation
-   - `project-memory/decisions/` — past decisions that affect implementation
-   - `agent-memory/lessons.md` — mistakes to avoid
-   - `agent-memory/patterns.md` — reusable approaches
+4. Scan `## Active Features` in `index.md` to find features with plans
+5. Load relevant memory:
+   - `project/architecture.md` — technical context
+   - `project/decisions/` — past decisions that affect implementation
+   - `agent/lessons.md` — mistakes to avoid
+   - `agent/patterns.md` — reusable approaches
 
 ## Phase 2: WORK
 
-### 2a: Select Task
+### 2a: Select Feature
 
-Parse the user's input to determine which task to implement:
+Parse the user's input:
 
-- **Task specified:** `/mema.implement user-auth` → look for `task-memory/user-auth/`
-- **Task + step specified:** `/mema.implement user-auth step 3` → load that specific step
-- **No task specified:** `/mema.implement` → list active tasks from index.md and ask which one
-- **"all" modifier:** `/mema.implement user-auth all` → implement all remaining steps sequentially (see 2e)
+- **Feature name or number:** `/mema.implement user-auth` or `/mema.implement 001` → find `features/NNN-name/`
+- **Feature + step:** `/mema.implement user-auth step 3` → implement that specific step
+- **No input:** list active features from index.md and ask which one
+- **"all" modifier:** `/mema.implement user-auth all` → implement all remaining steps (see 2e)
 
-If the specified task directory doesn't exist:
-- Tell the user: "No plan found for '[task-name]'. Run `/mema.plan [goal]` first to create an implementation plan."
+If the feature directory doesn't exist:
+- Tell the user: "No feature found for '[input]'. Run `/mema.specify` and `/mema.plan` first."
 - **Stop here.**
 
-### 2b: Load Task Context
+### 2b: Load Feature Context
 
-Read the task's files from `task-memory/[task-name]/`:
+Read from `features/NNN-name/`:
 
-1. **`plan.md`** — the full implementation plan with all steps
-2. **`status.md`** — current progress (which steps are done)
-3. **`context.md`** — exploration findings relevant to this task
+1. **`tasks.md`** — the ordered task list (prefer this over plan.md for step selection)
+2. **`plan.md`** — the technical design
+3. **`spec.md`** — what the feature is supposed to do
+4. **`status.md`** — current progress
 
-If `plan.md` is missing, tell the user: "Task directory exists but has no plan. Run `/mema.plan [goal]` to create one."
+If `tasks.md` is missing, tell the user: "No tasks found. Run `/mema.tasks [feature]` first."
 
 ### 2c: Select Step
 
-Determine which step to implement:
+- **If user specified a step:** validate it exists and isn't already complete. If complete, ask if they want to re-implement it.
+- **If no step specified:** find the first incomplete item (`- [ ]`) in `tasks.md`. If all items are complete, proceed to 2f (Task Completion).
 
-- **If user specified a step** (e.g., `step 3`): validate it exists in the plan and isn't already complete. If already complete, inform the user and ask if they want to re-implement it.
-- **If no step specified:** find the first incomplete step in `status.md` (first unchecked `- [ ]` item). If all steps are complete, see section 2f (Task Completion).
-
-Tell the user which step you're implementing:
+Tell the user which step is being implemented:
 
 ```
-## Implementing Step [N]/[total]: [Step title]
+## Implementing: [task description]
 
 [Brief description of what this step does]
 ```
 
 ### 2d: Implement the Step
 
-Follow the plan's specification for this step:
-
-1. **Read the step details** from `plan.md` — files to create/modify, specific implementation details, dependencies
-2. **Check dependencies** — verify that all prerequisite steps are marked complete in `status.md`. If a dependency is incomplete, warn the user: "Step [N] depends on Step [M] which isn't complete yet. Proceed anyway?" If the user says no, stop.
-3. **Implement the changes** — create/modify files as specified in the plan. Follow the project's existing coding patterns (from architecture.md and patterns.md). Apply lessons learned (from lessons.md) to avoid known pitfalls.
-4. **Verify the changes:**
-   - If the project has tests and the step involves testable code: run relevant tests
-   - Check for obvious errors (syntax, imports, type errors)
-   - Validate the implementation matches the plan's specification
-   - If verification fails: do NOT mark the step as complete. Inform the user with details about what went wrong and suggest fixes.
+1. **Read the task details** from `tasks.md` — files to create/modify, what to do
+2. **Check dependencies** — if the task references prior tasks that aren't done, warn the user and ask to confirm before proceeding
+3. **Implement the changes** — create/modify files as specified; follow the project's existing patterns (from architecture.md and patterns.md); apply lessons (from lessons.md) to avoid known pitfalls
+4. **Verify:**
+   - If the project has tests relevant to this step: run them
+   - Check for syntax errors, missing imports, obvious issues
+   - If verification fails: do NOT mark as complete; report what went wrong and suggest a fix
 
 ### 2e: Implement All Remaining (if requested)
 
-If the user requested "all" (e.g., `/mema.implement user-auth all`):
-
-1. Implement steps sequentially, starting from the first incomplete step
-2. After each step, verify before moving to the next
-3. If any step fails verification, stop and report. Do not continue to subsequent steps.
-4. After each successful step, show a brief progress update:
-   ```
-   Step [N]/[total] complete: [description]
-   ```
-5. After all steps are done, proceed to 2f (Task Completion)
+1. Implement tasks sequentially from first incomplete task
+2. Verify each before moving to next
+3. If any step fails, stop and report — do not continue
+4. Show a brief progress update after each step
 
 ### 2f: Update Progress
 
-After implementing a step (whether it succeeded or failed):
+After each step:
 
-1. **Update `status.md`:**
-   - Mark the completed step: `- [x] Step N: [description]`
-   - Add any notes about deviations from the plan under `## Notes`
-   - Update the `**Updated:**` date
+1. **Update `features/NNN-name/status.md`:**
+   - Update status to `in-progress` if this is the first step
+   - Add a progress log entry: date + task + notes
+   - Update "Next Task" field
+   - Update `**Updated:**` date
 
-2. **Print a progress summary:**
+2. **Update `features/NNN-name/tasks.md`:**
+   - Mark completed task: `- [x]`
+
+3. **Print progress summary:**
 
 ```
-## Progress: [Task Name]
+## Progress: [Feature Name]
 
-Step [N]/[total] complete: [what was done]
+Task complete: [what was done]
 
-[if verification passed:]
-Verified: [how — tests passed, no errors, etc.]
-
-[if verification failed:]
-Issue: [what went wrong]
-Suggested fix: [how to resolve]
+[if verified:] Verified: [how]
+[if failed:] Issue: [what went wrong] | Suggested fix: [how to resolve]
 
 ### Overall Progress
-[====------] [completed]/[total] steps
-Next: Step [N+1] — [description]
+[====------] [completed]/[total] tasks
+Next: [next task description]
 
-To continue: /mema.implement [task-name]
+To continue: /mema.implement [feature-name]
 ```
 
-### 2g: Task Completion
+### 2g: Feature Completion
 
-If all steps are now complete:
+If all tasks in `tasks.md` are now complete:
 
-1. Print a completion summary:
+1. Print completion summary:
 
 ```
-## Task Complete: [Task Name]
+## Feature Complete: [Feature Name]
 
-All [N] steps implemented successfully.
+All [N] tasks implemented.
 
 ### What was built
-- [Summary of changes made across all steps]
+[Summary of changes]
 
 ### Files changed
-- [List of files created or modified]
+[List of files created or modified]
 
-Would you like to archive this task? (This moves it from active tasks to archive/)
+Archive this feature? (moves to archive/ and removes from active features)
 ```
 
-2. If the user confirms archiving (or doesn't object), proceed to archive in Phase 3.
-3. If the user wants to keep it active (e.g., for further iteration), leave it in `task-memory/`.
+2. If user confirms, archive in Phase 3.
 
 ### 2h: Learn
 
-After completing work (whether one step or all steps), reflect:
-
-- Did anything unexpected happen during implementation? → Record as a lesson
-- Did you use a pattern that worked well? → Record as a pattern
-- Did any previous lesson prove wrong or need updating? → Update or delete it
-- Did the plan need adjustment? → Note this for future planning improvements
+After completing work, reflect:
+- Unexpected issues → record as lesson
+- Patterns that worked → record as pattern
+- Previous lessons that were wrong → update or delete them
 
 ## Phase 3: AUTO-SAVE & CURATE
 
-Follow the curation rules in `_memory-protocol.md`. For each piece of knowledge produced:
+Follow curation rules in `_memory-protocol.md`:
 
-- **Decisions made** during implementation → ADD to `project-memory/decisions/YYYY-MM-DD-short-name.md`
-- **Architecture changes** (if implementation changed the architecture) → UPDATE `project-memory/architecture.md`
-- **Lessons learned** → ADD/UPDATE `agent-memory/lessons.md`
-- **Patterns discovered** → ADD/UPDATE `agent-memory/patterns.md`
-- **Task progress** → UPDATE `task-memory/[task-name]/status.md`
+- **Decisions made** during implementation → ADD to `project/decisions/YYYY-MM-DD-short-name.md`
+- **Architecture changes** → UPDATE `project/architecture.md`
+- **Lessons learned** → ADD/UPDATE `agent/lessons.md`
+- **Patterns discovered** → ADD/UPDATE `agent/patterns.md`
+- **Task progress** → UPDATE `features/NNN-name/status.md` (done in 2f)
 
-Apply ADD/UPDATE/DELETE/NOOP to each memory file. Most files will be NOOP.
+Most files will be NOOP.
 
-### Task Archiving (on completion)
+### Feature Archiving (on completion)
 
-If the task is fully complete and the user has confirmed archiving:
+If fully complete and user confirmed:
 
-1. Update `task-memory/[task-name]/status.md`:
-   - Set `**Status:** complete`
-   - Fill in the `**Completed:**` field with today's date
-2. Move the entire `task-memory/[task-name]/` directory to `archive/[task-name]/`
-3. Remove the task from `## Active Tasks` in `index.md`
+1. Update `features/NNN-name/status.md`: set `**Status:** complete`
+2. Move `features/NNN-name/` to `archive/NNN-name/`
+3. Remove feature from `## Active Features` in `index.md`
 
 ## Phase 4: AUTO-INDEX
 
 Update `.mema/index.md`:
 1. Re-read the current index
-2. If a step was completed: update the task's summary in `## Active Tasks` (e.g., "3/7 steps complete")
-3. If the task was archived: move entry from `## Active Tasks` to remove it, and optionally note it under a completed tasks record
-4. Add entries for any new files (decisions, lessons, patterns)
-5. Update summaries for modified files
-6. Remove entries for deleted files
-7. Update the `**Updated:**` date
+2. Update the feature's summary in `## Active Features` with current progress (e.g., "3/7 tasks complete")
+3. If archived: remove from `## Active Features`
+4. Add entries for new files (decisions, lessons, patterns)
+5. Update `**Updated:**` date

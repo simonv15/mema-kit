@@ -4,37 +4,48 @@ description: Bootstrap the mema-kit memory system for this project. Creates .mem
 
 # /mema.onboard — Project Memory Bootstrap
 
-You are setting up the mema-kit memory system for this project. Follow these steps carefully. This command is idempotent — safe to re-run. Never overwrite existing data.
+You are setting up the mema-kit memory system for this project. Follow these steps carefully. This command is idempotent — safe to re-run. Never overwrite existing data without confirming.
 
 ## Step 1: Check Current State
 
 Before creating anything, assess what already exists:
 
 1. Check if `.mema/` directory exists
-2. Check if `CLAUDE.md` exists and whether it contains a `## Memory System` section
-3. Check if `.gitignore` exists and whether it contains `.mema` entries
+2. Check if it uses the **old structure** (`project-memory/`, `task-memory/`, `agent-memory/`) — if so, migration is needed
+3. Check if `CLAUDE.md` exists and has a `## Memory System` section
+4. Check if `.gitignore` contains `.mema` entries
 
-Report what you found to the user: "Setting up mema-kit. Found existing .mema/ directory — will verify and repair." or "Fresh setup — creating everything from scratch."
+Report to the user: "Setting up mema-kit. Found existing .mema/ — will verify and update." or "Fresh setup — creating everything from scratch." or "Found old mema-kit structure — will migrate to new layout."
 
-## Step 2: Create .mema/ Directory Structure
+## Step 2: Migrate Old Structure (if needed)
+
+If the old directory structure exists, migrate it before creating anything new:
+
+- If `.mema/project-memory/` exists and `.mema/project/` does not → rename to `.mema/project/`; tell user: "Migrated project-memory/ → project/"
+- If `.mema/agent-memory/` exists and `.mema/agent/` does not → rename to `.mema/agent/`; tell user: "Migrated agent-memory/ → agent/"
+- If `.mema/task-memory/` exists and `.mema/features/` does not → rename to `.mema/features/`; tell user: "Migrated task-memory/ → features/"
+
+If new structure already exists: NOOP on that directory.
+
+## Step 3: Create .mema/ Directory Structure
 
 Create the following directories if they don't already exist:
 
 ```
 .mema/
-├── _templates/
-├── project-memory/
+├── product/
+├── features/
+├── project/
 │   └── decisions/
-├── task-memory/
-├── agent-memory/
+├── agent/
 └── archive/
 ```
 
 For each directory: if it exists, skip it. If it doesn't, create it.
 
-## Step 3: Write Template Files
+## Step 4: Write Template Files
 
-Write the following files to `.mema/_templates/`. If a template file already exists, **skip it** (the user may have customized it).
+Write the following files to `.mema/_templates/`. If a template file already exists, **skip it**.
 
 ### `.mema/_templates/decision.md`
 
@@ -44,85 +55,61 @@ Write the following files to `.mema/_templates/`. If a template file already exi
 **Status:** active | **Updated:** YYYY-MM-DD
 
 ## Context
-<!-- What situation or question prompted this decision? What problem are we solving? -->
 
 ## Decision
-<!-- What was decided? Be specific and concrete. -->
 
 ## Options Considered
 
 ### Option A: [Name]
-<!-- Brief description. Why chosen/rejected. -->
 
 ### Option B: [Name]
-<!-- Brief description. Why chosen/rejected. -->
 
 ## Reasoning
-<!-- Why this option was selected. What factors mattered most? What trade-offs were accepted? -->
 
 ## Consequences
-<!-- What are the implications? What does this enable or constrain? Any known trade-offs or risks? -->
 ```
 
-### `.mema/_templates/context.md`
+### `.mema/_templates/spec.md`
 
 ```
-# [Topic] — Exploration Context
+# [Feature Name] — Spec
 
 **Status:** active | **Updated:** YYYY-MM-DD
 
-## Summary
-<!-- 2-3 sentence overview of what was explored and the key takeaway. -->
+## Purpose
 
-## Key Findings
-<!-- Bullet list of important facts, constraints, or insights discovered. Be specific and concise. -->
+## User Scenarios
 
--
--
--
+### Scenario 1
 
-## Open Questions
-<!-- What remains unresolved? What needs further exploration or a decision? -->
+Given [state], When [action], Then [outcome]
 
--
--
+## Acceptance Criteria
 
-## Relates To
-<!-- Links to related memory files (decisions, other context, plans). Use relative paths. -->
+- [ ] [Criterion]
 
--
+## Constraints
 ```
 
-### `.mema/_templates/plan.md`
+### `.mema/_templates/status.md`
 
 ```
-# [Task Name] — Implementation Plan
+# [Feature Name] — Status
 
-**Status:** active | **Updated:** YYYY-MM-DD
+**Status:** pending | **Updated:** YYYY-MM-DD
 
-## General Plan
-<!-- High-level approach: architecture decisions, component design, data flow. Keep it to 1-2 paragraphs or a short list. This should answer "what are we building and how does it fit together?" -->
+## Current Status
 
-## Detailed Plan
-<!-- Step-by-step implementation tasks. Each step should be specific enough to implement directly. -->
+`pending` — not started
 
-### Step 1: [Action]
-<!-- What to do, which files to create/modify, any dependencies on prior steps. -->
-- Files: `path/to/file`
-- Details:
+## Progress Log
 
-### Step 2: [Action]
-- Files: `path/to/file`
-- Details:
+| Date | Task | Notes |
+|------|------|-------|
 
-### Step 3: [Action]
-- Files: `path/to/file`
-- Details:
+## Next Task
 
-## Out of Scope
-<!-- What this plan explicitly does NOT cover. Prevents scope creep during implementation. -->
-
--
+## Blockers
 ```
 
 ### `.mema/_templates/lessons.md`
@@ -135,13 +122,10 @@ Write the following files to `.mema/_templates/`. If a template file already exi
 ## Lessons
 
 ### [Short Title]
-<!-- One-sentence lesson. -->
-- **Context:** <!-- When/how this was discovered. -->
-- **Example:** <!-- Concrete code example or scenario if applicable. -->
+- **Context:**
+- **Example:**
 
 ---
-
-<!-- Add new lessons above this line. When entries exceed ~30, consolidate related lessons under grouped headers. -->
 ```
 
 ### `.mema/_templates/patterns.md`
@@ -154,202 +138,147 @@ Write the following files to `.mema/_templates/`. If a template file already exi
 ## Patterns
 
 ### [Pattern Name]
-- **Structure:** <!-- How the pattern is organized. -->
-- **Example:** <!-- Concrete usage example. -->
+- **Structure:**
+- **Example:**
 
 ---
-
-<!-- Add new patterns above this line. -->
 ```
 
-### `.mema/_templates/status.md`
+## Step 5: Scan the Project
 
-```
-# [Task Name] — Status
+Read and analyze the project to populate memory with real content.
 
-**Status:** active | **Updated:** YYYY-MM-DD
+### 5a: Detect Project Type and Stack
 
-## Progress
+Read (skip any that don't exist):
+1. `package.json`, `pyproject.toml`, `Cargo.toml`, `go.mod`, `pom.xml`, or `Gemfile` — language, framework, dependencies
+2. `README.md` — project purpose and setup
+3. `CLAUDE.md` — existing conventions
+4. Config files (`tsconfig.json`, `.eslintrc`, etc.)
 
-- [ ] Step 1: [description]
-- [ ] Step 2: [description]
-- [ ] Step 3: [description]
+### 5b: Scan Directory Structure
 
-## Notes
-<!-- Any blockers, deviations from plan, or important observations during implementation. -->
+List top-level directories and key subdirectories (1-2 levels deep). Note source, test, and config locations.
 
-## Completed
-**Completed:**
-```
+### 5c: Read Representative Source Files
 
-## Step 4: Scan the Project
+Pick 2-3 files that best represent the codebase: main entry point, a representative module, a test file.
 
-This is the intelligence step. Read and analyze the project to populate memory with real content instead of empty placeholders.
+### 5d: Compile Findings
 
-### 4a: Detect Project Type and Stack
-
-Read the following files (skip any that don't exist):
-
-1. `package.json` or `pyproject.toml` or `Cargo.toml` or `go.mod` or `pom.xml` or `Gemfile` — to identify language, framework, and dependencies
-2. `README.md` — to understand project purpose and setup
-3. `CLAUDE.md` — to understand existing conventions and instructions
-4. `tsconfig.json` or equivalent config files — to understand build setup
-
-### 4b: Scan Directory Structure
-
-List the top-level directories and key subdirectories (1-2 levels deep) to understand the project layout. Note:
-- Source code location (`src/`, `lib/`, `app/`, etc.)
-- Test location (`tests/`, `__tests__/`, `test/`, etc.)
-- Config files present
-- Any existing documentation
-
-### 4c: Read Representative Source Files
-
-Pick 2-3 source files that best represent the codebase patterns:
-- The main entry point (e.g., `src/index.ts`, `main.py`, `main.go`)
-- A representative module/component
-- A test file (if tests exist)
-
-Read these to understand coding patterns, style, and architecture.
-
-### 4d: Summarize Findings
-
-Before writing memory, compile your findings:
-- **Project name** and purpose
-- **Language/framework/stack** with versions
-- **Architecture pattern** (monolith, microservices, CLI tool, library, etc.)
-- **Key directories** and what they contain
-- **Testing setup** (framework, patterns)
-- **Build/run commands**
-- **Notable conventions** (naming, patterns, config)
-
-## Step 5: Populate Initial Memory
-
-Using the scan findings, create memory files with **real content** (not empty placeholders).
-
-### `.mema/project-memory/architecture.md`
-
-Write an architecture overview based on what you discovered. Include:
-- Tech stack with versions
-- Project structure (key directories and their purposes)
+Before writing memory, note:
+- Project name and purpose
+- Language/framework/stack with versions
 - Architecture pattern
-- Key entry points
-- Build and run commands
+- Key directories
+- Testing setup
+- Build/run commands
+- Notable conventions
 
-Example format:
+## Step 6: Populate Initial Memory
+
+Using scan findings, create files with **real content** (not empty placeholders).
+
+### `.mema/project/architecture.md`
 
 ```
 # Project Architecture
 
-**Status:** active | **Updated:** [today's date]
+**Status:** active | **Updated:** [today]
 
 ## Stack
-- **Language:** TypeScript 5.x
-- **Runtime:** Node.js 20+
-- **Framework:** Fastify 4.x
-- **Database:** PostgreSQL 16 via Drizzle ORM
-- **Testing:** Vitest
+- **Language:** [detected]
+- **Framework:** [detected]
+[other stack items]
 
 ## Structure
-- `src/` — Application source code
-  - `routes/` — API route handlers
-  - `services/` — Business logic
-  - `db/` — Database schema and migrations
-- `tests/` — Test files mirroring src/ structure
+- `[dir]/` — [purpose]
+[other directories]
 
 ## Architecture
-REST API following controller → service → repository layers.
-Entry point: `src/app.ts`
+[Pattern in 1-2 sentences. Entry point: path/to/entry]
 
 ## Commands
-- `npm run dev` — Start development server
-- `npm test` — Run test suite
-- `npm run build` — Build for production
+- `[dev command]` — Start development
+- `[test command]` — Run tests
 ```
 
-### `.mema/project-memory/requirements.md`
-
-Write a requirements summary based on README, package.json description, and observed functionality:
+### `.mema/project/requirements.md`
 
 ```
 # Project Requirements
 
-**Status:** active | **Updated:** [today's date]
+**Status:** active | **Updated:** [today]
 
 ## Purpose
-[What this project does, based on README and code]
+[What this project does, from README and code]
 
 ## Key Requirements
-- [Requirement discovered from code/docs]
-- [Requirement discovered from code/docs]
+- [Requirement from code/docs]
 
 ## Constraints
-- [Any constraints discovered (Node version, dependencies, etc.)]
+- [Constraint discovered]
 ```
 
-### `.mema/agent-memory/lessons.md`
-
-Create a starter lessons file with any project-specific gotchas discovered during scanning:
+### `.mema/agent/lessons.md`
 
 ```
 # Agent Lessons
 
-**Updated:** [today's date]
+**Updated:** [today]
 
 ## Lessons
 
-<!-- Lessons will be added here as the agent learns from development experience. -->
+[Add any project-specific gotchas found during scan, or leave as:]
+<!-- Lessons will be added here as development experience accumulates. -->
 ```
 
-If you discovered anything notable during scanning (e.g., unusual config, non-obvious setup steps), add it as the first lesson.
-
-### `.mema/agent-memory/patterns.md`
-
-Create a starter patterns file. If you identified clear patterns from the source files you read, add them:
+### `.mema/agent/patterns.md`
 
 ```
 # Agent Patterns
 
-**Updated:** [today's date]
+**Updated:** [today]
 
 ## Patterns
 
-<!-- Patterns will be added here as the agent discovers reusable approaches. -->
+[Add any clear patterns from source files, or leave as:]
+<!-- Patterns will be added here as development experience accumulates. -->
 ```
 
 ### `.mema/index.md`
 
-Build the index from the files you just created:
+Build the index from files just created:
 
 ```
 # Memory Index
 
-**Updated:** [today's date]
+**Updated:** [today]
 
-## Active Tasks
+## Active Features
+
+## Product Discovery
 
 ## Project Knowledge
-- `project-memory/architecture.md` — [one-line summary of stack/architecture]
-- `project-memory/requirements.md` — [one-line summary of purpose]
+- `project/architecture.md` — [one-line stack/architecture summary]
+- `project/requirements.md` — [one-line purpose summary]
 
-## Recent Decisions
-
-## Agent Lessons
-- `agent-memory/lessons.md` — [N] lessons recorded
-- `agent-memory/patterns.md` — [N] patterns recorded
+## Agent Knowledge
+- `agent/lessons.md` — [N] lessons recorded
+- `agent/patterns.md` — [N] patterns recorded
 ```
 
-## Step 6: Update CLAUDE.md
+## Step 7: Update CLAUDE.md
 
-Read the current `CLAUDE.md` (if it exists) and follow the appropriate path:
+Read the current `CLAUDE.md` (if exists) and follow the appropriate path:
 
 ### Path A: CLAUDE.md already exists
 
-1. Search for `## Memory System` in the file content
-2. If found → **skip this step entirely** (already configured). Record outcome as **skipped**.
-3. If not found → append the Memory System section (see below) at the end of the file. Record outcome as **appended**.
+1. Search for `## Memory System`
+2. If found → **skip this step** (already configured)
+3. If not found → append the Memory System section below
 
-Memory System section to append:
+Memory System section:
 
 ```
 ## Memory System
@@ -361,197 +290,75 @@ Memory lives in `.mema/`. At the start of each task, read `.mema/index.md` to lo
 Memory is managed automatically by skills — do not manually modify `.mema/` files unless correcting an error.
 ```
 
-### Path B: CLAUDE.md does NOT exist — Generate comprehensive file
+### Path B: CLAUDE.md does NOT exist — Generate from scratch
 
-Follow sub-steps 6a through 6f to build a rich CLAUDE.md from scratch. Use the scan data collected in Step 4 for all content. Record outcome as **generated**.
+Follow sub-steps 7a through 7f.
 
-#### 6a: Ask user "About Me"
+#### 7a: Ask user "About Me"
 
-Ask the user a single question using the AskUserQuestion tool:
+Ask one question using AskUserQuestion:
 
-> "Before I generate your CLAUDE.md, I'd like to personalize it. How would you describe yourself? (e.g., experience level, preferences for code style, anything you want Claude to know)"
+> "Before I generate your CLAUDE.md, how would you describe yourself?"
 
-Provide 3 options:
-- **Junior developer** — "I'm learning. Explain decisions, be thorough in comments, correct my terminology gently."
+Options:
+- **Junior developer** — "I'm learning. Explain decisions, be thorough, correct my terminology gently."
 - **Senior developer** — "I'm experienced. Keep explanations brief, focus on trade-offs and edge cases."
-- **Skip** — "Skip personalization, use a sensible default."
+- **Skip** — Use a sensible default
 
-If the user selects "Skip" or doesn't respond, use this default:
+#### 7b–7f: Generate CLAUDE.md sections
 
-```
-When I ask you to implement something, briefly explain key decisions. Prefer clear, well-commented code.
-```
+Use Step 5 scan data to write:
+- `# About Me` — from user's answer in 7a
+- `## Project Overview` — name, description, directory tree, architecture
+- `## Coding Standards` — naming conventions, style, patterns, tooling detected
+- `## Technical Workflows` — dev/test/build commands from package scripts
+- `## Skill Commands` — scan `.claude/skills/` for SKILL.md frontmatter descriptions
+- `## Memory System` — standard section (same as Path A)
 
-#### 6b: Write the `# About Me` section
+## Step 8: Update .gitignore
 
-Use the user's response from 6a to write a natural-language paragraph (3-5 lines). This section uses **H1** (`# About Me`), matching mema-kit's own CLAUDE.md convention.
-
-#### 6c: Write the `## Project Overview` section
-
-Using Step 4 scan data, generate three sub-sections:
-
-**Opening paragraph:** Project name (from `package.json` name field, `README.md` title, or directory name as fallback) and a 1-2 sentence description of what the project does.
-
-**`### Repository Structure`:** A directory tree (top-level + 1 level deep) with inline comments explaining each directory's purpose. Use the `tree` format:
-
-```
-project-name/
-├── src/           # Source code
-├── tests/         # Test suite
-└── package.json   # Dependencies and scripts
-```
-
-**`### Architecture`:** Architecture pattern (e.g., REST API, CLI tool, library), key entry points, and data flow. Keep to 2-4 sentences. If the project is too simple or unclear for an architecture description, write: "Architecture details will be added as the project grows."
-
-#### 6d: Write the `## Coding Standards` section
-
-Using Step 4c source file analysis, generate a bullet list covering:
-
-- **Naming:** Conventions observed (camelCase, snake_case, kebab-case for files, etc.)
-- **Style:** Formatting patterns (semicolons, quotes, indentation)
-- **Patterns:** Recurring code patterns (e.g., "error-first callbacks", "async/await throughout")
-- **Tooling:** Linting/formatting tools detected (ESLint, Prettier, Black, rustfmt, etc. — check `devDependencies`, config files like `.eslintrc`, `.prettierrc`, `pyproject.toml [tool.black]`)
-
-If insufficient data for any bullet, use a placeholder like: "No linting configuration detected — consider adding one."
-
-#### 6e: Write the `## Technical Workflows` section
-
-Using Step 4a package manager files (`package.json` scripts, `Makefile` targets, `pyproject.toml [tool.poetry.scripts]`, `Cargo.toml`, etc.), generate a list of common commands:
-
-```
-- `npm run dev` — Start development server
-- `npm test` — Run test suite
-- `npm run build` — Build for production
-```
-
-Include dev, test, build, and lint commands at minimum (if they exist). If no commands are detected, write: "No build/test commands detected. Add scripts to `package.json` (or equivalent) as the project matures."
-
-#### 6f: Write the `## Skill Commands` and `## Memory System` sections
-
-**Skill Commands:** Scan the `.claude/skills/` directory. For each subdirectory containing a `SKILL.md`, read the YAML frontmatter `description` field. Generate an entry:
-
-```
-- `/skill-name` — [description from frontmatter]
-```
-
-If no skills are found (shouldn't happen since we just installed them, but as a fallback):
-
-```
-- `/mema.onboard` — Bootstrap the mema-kit memory system
-- `/mema.recall` — Recall project memory into current session
-- `/mema.create-skill` — Generate a new memory-aware skill
-```
-
-**Memory System:** Append the standard Memory System section (same text as Path A).
-
-#### Assemble the final CLAUDE.md
-
-Combine all sections into a single file in this order and write it:
-
-```
-# CLAUDE.md
-
-This file provides guidance to Claude Code when working with code in this repository.
-
-# About Me
-[Content from 6b]
-
-## Project Overview
-
-[Content from 6c — opening paragraph]
-
-### Repository Structure
-
-[Content from 6c — tree]
-
-### Architecture
-
-[Content from 6c — architecture description]
-
-## Coding Standards
-
-[Content from 6d]
-
-## Technical Workflows
-
-[Content from 6e]
-
-## Skill Commands
-
-[Content from 6f — skill list]
-
-## Memory System
-
-This project uses mema-kit for persistent memory across sessions.
-
-Memory lives in `.mema/`. At the start of each task, read `.mema/index.md` to load relevant context. After completing work, curate and save knowledge following the memory protocol in `.claude/skills/_memory-protocol.md`.
-
-Memory is managed automatically by skills — do not manually modify `.mema/` files unless correcting an error.
-```
-
-## Step 7: Update .gitignore
-
-1. Read the current `.gitignore` (if it exists)
-2. Search for `.mema` in the file content
-3. If found → **skip this step** (already configured)
-4. If not found → append the following block at the end of the file
-5. If `.gitignore` doesn't exist → create the file with this content
-
-Append this block:
+1. Read current `.gitignore` (if exists)
+2. If `.mema` is already excluded → skip
+3. If not → append:
 
 ```
 # mema-kit memory (developer-local)
 .mema/*
 # Uncomment to share project decisions with your team:
-# !.mema/project-memory/
+# !.mema/project/
 ```
 
-## Step 8: Confirm to the User
+## Step 9: Confirm to User
 
-Print a summary of what was done, including what you discovered about the project. Use the CLAUDE.md outcome recorded in Step 6 to select the appropriate message.
-
-For the CLAUDE.md line, use the matching outcome:
-
-- **generated** → `[check] CLAUDE.md generated with project overview, coding standards, workflows, and memory system`
-- **appended** → `[check] CLAUDE.md updated — memory system section appended`
-- **skipped** → `[check] CLAUDE.md — memory system section already present`
-
-### Fresh setup (first run):
+Print a summary of what was done:
 
 ```
-mema-kit initialized! Here's what was set up:
+mema-kit initialized!
 
-[check] .mema/ directory structure (memory system)
-[check] Memory templates in .mema/_templates/
-[check] [CLAUDE.md outcome message from above]
-[check] .gitignore updated to exclude .mema/
+[check] .mema/ structure created (product/, features/, project/, agent/)
+[check] CLAUDE.md [generated / updated / already configured]
+[check] .gitignore updated
 
-Project scan results:
-- [Language/framework discovered]
-- [Architecture pattern discovered]
-- [N] source directories mapped
-- [Notable findings]
+Project scan:
+- [Language/framework]
+- [Architecture pattern]
+- [Key finding]
 
-Memory populated:
-- architecture.md — [summary]
-- requirements.md — [summary]
-- lessons.md — [N] initial lessons
-- patterns.md — [N] initial patterns
-
-Next: Start working on your project. Memory will be loaded and saved automatically by any mema-kit skill.
+Next steps:
+- New idea? Run /mema.seed to start the discovery workflow
+- Existing feature to build? Run /mema.specify to create a feature spec
+- Start a new session? Run /mema.recall to load context
 ```
 
-### Re-run (some items already existed):
-
-Adjust the summary to show what was verified vs. created:
+For a re-run with migration:
 
 ```
-mema-kit verified! Everything looks good:
+mema-kit updated!
 
-[check] .mema/ directory structure — already exists, verified
-[check] Memory templates — already exist, skipped
-[check] [CLAUDE.md outcome message from above]
-[check] .gitignore — .mema/ already excluded
+[check] Migrated project-memory/ → project/
+[check] Migrated agent-memory/ → agent/
+[check] Migrated task-memory/ → features/
+[check] Directory structure verified
 
-Your setup is intact. No changes were needed.
+Your existing memory is preserved. Run /mema.recall to see current state.
 ```
