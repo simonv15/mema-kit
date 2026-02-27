@@ -272,6 +272,18 @@ Each skill reads what previous skills wrote. The index ties it all together.
 
 > **Tip:** Start every new session with `/mema.recall` to load project context before using other skills. It takes seconds and saves minutes of re-exploration.
 
+### Preview before write
+
+After generating a skill, `/mema.create-skill` shows you the full SKILL.md content for review before writing anything to disk. Reply **APPROVE** to write the file, describe a change to revise a specific section, or **CANCEL** to exit without changes.
+
+### Updating existing skills
+
+Re-running `/mema.create-skill` with an existing skill name won't blindly overwrite. It detects the existing file, shows you its description and section headings, then offers three choices:
+
+1. **Enhance existing** — apply a described change to specific sections, preserving the rest
+2. **Overwrite** — start fresh with a new interview and preview
+3. **Cancel** — exit without changes
+
 ---
 
 ## The Memory Protocol
