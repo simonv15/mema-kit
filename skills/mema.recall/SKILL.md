@@ -12,80 +12,73 @@ Follow these steps carefully.
 
 Parse the user's input to decide which mode to use:
 
-- **No arguments** or `minimal` → **Minimal mode** (default) — fast overview of project purpose, stack, and current status
-- `full` → **Full mode** — everything in Minimal plus decisions, lessons, patterns, and active context/plans
+- **No arguments** or `minimal` → **Minimal mode** (default) — fast overview with active features, project identity, and next action
+- `full` → **Full mode** — everything in Minimal plus decisions, lessons, patterns, and product discovery
 
-If the user provides an unrecognized argument (not `minimal`, `full`, or empty):
-1. Warn them: "Unknown argument '[arg]'. Available modes: `minimal` (default), `full`."
-2. Fall back to **Minimal mode** and continue.
+If the user provides an unrecognized argument, warn them and fall back to Minimal mode.
 
 ## Step 2: AUTO-LOAD
 
 1. Read `.mema/index.md`
 2. If `index.md` is missing or `.mema/` does not exist:
-   - Tell the user: "No memory found. Run `/mema.onboard` first to set up mema-kit for this project."
-   - **Stop here** — do not continue to further steps.
-3. Parse the index to identify available memory files and their summaries.
+   - Tell the user: "No memory found. For an existing project, run `/mema.onboard` to set up mema-kit. For a new idea, run `/mema.seed` to start the discovery workflow."
+   - **Stop here** — do not continue.
+3. Parse the index to identify available memory files.
 
-## Step 3: Load Project Purpose
+## Step 3: Load Active Features
 
-Read the following files (skip any that don't exist):
+Read `features/NNN-name/status.md` for every feature directory listed under `## Active Features` in `index.md` that is NOT marked `complete`.
 
-1. `.mema/project-memory/architecture.md` — extract tech stack, project structure, architecture pattern, and key commands
-2. `.mema/project-memory/requirements.md` — extract project purpose, key requirements, and constraints
+For each active feature, note:
+- Feature name and number
+- Current status (`pending` or `in-progress`)
+- Last completed task and next task (from status.md progress log)
 
-These form the core context for both Minimal and Full modes.
+This is the most important context — surface it first.
 
-## Step 4: Load Current Status
+## Step 4: Load Project Knowledge
 
-1. Check the `## Active Tasks` section in `index.md`
-2. If there are active tasks listed, read any linked status files (e.g., `task-memory/[task-name]/status.md`)
-3. Note which tasks are in progress, their current step, and any blockers
+Read the following (skip any that don't exist):
+
+1. `.mema/project/architecture.md` — tech stack, structure, architecture pattern
+2. `.mema/project/requirements.md` — project purpose and constraints
 
 ## Step 5: Load Additional Files (Full Mode Only)
 
-**Skip this step entirely if in Minimal mode.**
+**Skip entirely if in Minimal mode.**
 
-In Full mode, also read these files (skip any that don't exist):
+1. **Recent decisions** — Read files listed under `## Project Knowledge` → `decisions/` in `index.md`
+2. **Lessons** — Read `agent/lessons.md`
+3. **Patterns** — Read `agent/patterns.md`
+4. **Product discovery** — Read `product/roadmap.md` summary if listed in index
 
-1. **Recent decisions** — Read files listed under `## Recent Decisions` in `index.md`
-2. **Lessons** — Read `agent-memory/lessons.md`
-3. **Patterns** — Read `agent-memory/patterns.md`
-4. **Active context and plans** — Read any `context.md` and `plan.md` files linked from active tasks in `index.md`
-
-Read only files that exist and are listed in the index. Do not scan the directory tree for unlisted files.
+Read only files that exist and are listed in the index.
 
 ## Step 6: REPORT
 
 Print the memory summary directly into the conversation. **Never write output to a file.**
-
-Use the format below based on the current mode.
 
 ---
 
 ### Minimal Mode Output
 
 ```
-## Project Memory (Minimal)
+## Project Memory
 
-### Purpose
-[Project name and what it does — from requirements.md]
+### Active Features
+[For each active feature:]
+- **[NNN] [Feature name]** — [status] | Next: [next task]
+[If no active features: "No features in progress. Run /mema.specify to start one."]
 
-### Stack & Architecture
-[Tech stack, architecture pattern, key entry points — from architecture.md]
+### Project
+[Name] — [purpose from requirements.md]
+Stack: [tech stack from architecture.md]
 
-### Current Status
-[Active tasks and their progress — from index.md + status files]
-[If no active tasks: "No active tasks."]
-
-### Memory Map
-[List each section from index.md with file count, e.g.:]
-- Project Knowledge: [N] files
-- Recent Decisions: [N] decisions
-- Agent Lessons: [N] lessons, [N] patterns
+### What to run next
+[Suggest the most logical next command based on active feature status]
 
 ---
-*Showing minimal recall. Use `/mema.recall full` for decisions, lessons, and patterns.*
+*Use `/mema.recall full` for decisions, lessons, and product discovery.*
 ```
 
 ---
@@ -95,41 +88,42 @@ Use the format below based on the current mode.
 ```
 ## Project Memory (Full)
 
-### Purpose
-[Project name and what it does — from requirements.md]
+### Active Features
+[For each active feature:]
+- **[NNN] [Feature name]** — [status] | Next: [next task]
+[If no active features: "No features in progress. Run /mema.specify to start one."]
 
-### Stack & Architecture
-[Tech stack, architecture pattern, key entry points — from architecture.md]
+### Product Discovery
+[If product/ files exist:]
+- Idea: [summary from seed.md]
+- Roadmap: [N features defined — from roadmap.md]
+[If no product/ files: omit section]
 
-### Current Status
-[Active tasks and their progress — from index.md + status files]
-[If no active tasks: "No active tasks."]
+### Project
+[Name] — [purpose]
+Stack: [tech stack]
+Architecture: [pattern]
 
 ### Recent Decisions
 [For each decision file, list:]
-- **[Decision title]** ([date]) — [one-line summary or key choice made]
-[If no decisions: "No decisions recorded yet."]
+- **[Decision title]** — [one-line summary]
+[If none: "No decisions recorded yet."]
 
 ### Lessons
-[Bullet list of lessons from lessons.md]
-[If no lessons: "No lessons recorded yet."]
+[Bullet list from agent/lessons.md]
+[If none: "No lessons recorded yet."]
 
 ### Patterns
-[Bullet list of patterns from patterns.md]
-[If no patterns: "No patterns recorded yet."]
-
-### Active Context & Plans
-[For each active task, summarize its context and plan]
-[If none: omit this section]
+[Bullet list from agent/patterns.md]
+[If none: "No patterns recorded yet."]
 
 ### Memory Map
-- Project Knowledge: [N] files
-- Recent Decisions: [N] decisions
-- Agent Lessons: [N] lessons, [N] patterns
-- Active Tasks: [N] tasks
-- Archived Tasks: [N] archived
+- Active Features: [N]
+- Product Discovery: [files present]
+- Project Knowledge: [N] files, [N] decisions
+- Agent Knowledge: [N] lessons, [N] patterns
 ```
 
 ---
 
-**Important:** This skill is purely informational. If you notice memory files are missing or out of date, suggest the user run `/mema.onboard` or the relevant skill — do not attempt to fix memory yourself.
+**Important:** This skill is purely informational. If memory files are missing or out of date, suggest the user run `/mema.onboard` or the relevant skill — do not modify memory files yourself.
