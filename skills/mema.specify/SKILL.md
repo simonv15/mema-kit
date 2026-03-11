@@ -96,10 +96,24 @@ Write `.mema/features/NNN-name/spec.md`:
 [What this feature deliberately does NOT include]
 ```
 
+### Create Feature Branch (if scripts available)
+
+After saving `spec.md`, create (or check out) the feature branch:
+
+1. Parse the feature number and name from the feature directory path:
+   - Example: `features/005-skill-integration/` → NNN = `005`, name = `skill-integration`
+2. Check if `scripts/bash/create-feature-branch.sh` exists (use Glob: `scripts/bash/create-feature-branch.sh`)
+3. **If found:** run: `bash scripts/bash/create-feature-branch.sh <NNN> <name> --json`
+   - `status: "created"` → include in confirmation: "Branch created: feat-NNN-name"
+   - `status: "exists"` → include: "Branch already exists: feat-NNN-name (checked out)"
+   - `status: "error"` → surface the error message; note that spec.md was saved successfully; tell user to resolve the issue (e.g. commit or stash dirty files) and re-run `/mema.specify`
+4. **If not found:** note: "Git scripts not installed — run `npx mema-kit` to enable automatic branch creation."
+
 ### Confirm to User
 
 ```
 Spec saved: features/[NNN-name]/spec.md
+Branch:     [feat-NNN-name (created) | feat-NNN-name (exists) | error — see above | scripts not installed]
 
 [Feature name]: [one-line purpose summary]
 [N] acceptance criteria defined
