@@ -1,6 +1,6 @@
 {
   "name": "mema-kit",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "AI-assisted development lifecycle kit",
   "bin": {
     "mema-kit": "bin/cli.js"
