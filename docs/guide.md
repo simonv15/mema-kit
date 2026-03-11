@@ -188,6 +188,7 @@ Every skill reads what previous skills wrote. The index ties it all together.
 ├── project/               # Stable project knowledge
 │   ├── architecture.md
 │   ├── requirements.md
+│   ├── structure.md       # Annotated directory tree
 │   └── decisions/
 ├── agent/                 # Cross-session knowledge
 │   ├── lessons.md
