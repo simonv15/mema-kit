@@ -19,6 +19,7 @@
 
 - `project/architecture.md` — Project architecture (not yet documented)
 - `project/requirements.md` — Project requirements (not yet documented)
+- `project/structure.md` — Annotated directory tree (not yet documented)
 
 ## Agent Knowledge
 
