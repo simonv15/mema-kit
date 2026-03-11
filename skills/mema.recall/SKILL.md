@@ -42,6 +42,7 @@ Read the following (skip any that don't exist):
 
 1. `.mema/project/architecture.md` — tech stack, structure, architecture pattern
 2. `.mema/project/requirements.md` — project purpose and constraints
+3. `.mema/project/structure.md` — annotated directory tree and navigation guide
 
 ## Step 5: Load Additional Files (Full Mode Only)
 
@@ -103,6 +104,13 @@ Stack: [tech stack from architecture.md]
 [Name] — [purpose]
 Stack: [tech stack]
 Architecture: [pattern]
+
+### Repository Structure
+[If project/structure.md exists:]
+[Top-level tree from ## Directory Tree (first level only)]
+Where to find:
+[Entries from ## Where to Find X, condensed to one line each]
+[If project/structure.md does not exist: omit section]
 
 ### Recent Decisions
 [For each decision file, list:]

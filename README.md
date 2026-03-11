@@ -91,6 +91,7 @@ claude
 ├── project/               # Stable project knowledge
 │   ├── architecture.md
 │   ├── requirements.md
+│   ├── structure.md
 │   └── decisions/
 ├── agent/                 # Cross-session knowledge
 │   ├── lessons.md

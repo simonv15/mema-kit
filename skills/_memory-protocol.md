@@ -84,6 +84,12 @@ Update `.mema/index.md` to reflect all changes made in Phase 3. This is **mandat
 - **UPDATE** when the stack or requirements change.
 - Keep current state only — these are reference documents, not history logs.
 
+### project/structure.md — Replace curation
+- **UPDATE** when directories or key files are added, renamed, or removed.
+- Keep current state only — this is a navigation reference, not a history log.
+- **NOOP** if no structural change occurred in this session.
+- Never delete — if the project structure is unknown, leave the file with a minimal tree rather than removing it.
+
 ### agent/lessons.md and agent/patterns.md — Consolidation curation
 - **Merge similar lessons.** "Drizzle needs type casting" and "Drizzle enum handling requires explicit cast" are the same lesson — keep one entry with both examples.
 - **UPDATE** with new examples when the same pattern/lesson recurs.
