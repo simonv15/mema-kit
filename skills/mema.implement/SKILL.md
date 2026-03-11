@@ -143,6 +143,7 @@ Follow curation rules in `_memory-protocol.md`:
 
 - **Decisions made** during implementation → ADD to `project/decisions/YYYY-MM-DD-short-name.md`
 - **Architecture changes** → UPDATE `project/architecture.md`
+- **Structural changes** (new files, directories, or moves) → UPDATE `project/structure.md`: add/remove/rename the affected entries in `## Directory Tree` and `## Where to Find X`. If nothing structural changed, NOOP.
 - **Lessons learned** → ADD/UPDATE `agent/lessons.md`
 - **Patterns discovered** → ADD/UPDATE `agent/patterns.md`
 - **Task progress** → UPDATE `features/NNN-name/status.md` (done in 2f)

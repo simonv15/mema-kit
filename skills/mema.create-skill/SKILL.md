@@ -292,6 +292,10 @@ Follow the curation rules in `_memory-protocol.md`.
 
 **If a skill file was written** (user did not CANCEL):
 - ADD/UPDATE `agent/patterns.md` with a lightweight record: skill name, complexity level, one-sentence purpose, action taken (`created` / `enhanced` / `overwritten`), date (`YYYY-MM-DD`)
+- UPDATE `project/structure.md`:
+  - Add `├── [skill-name]/   — [skill purpose, one clause]` to the `.claude/skills/` subtree in `## Directory Tree`
+  - Add entry to `## Where to Find X`: `**[Skill name] skill:** .claude/skills/[skill-name]/SKILL.md`
+  - If `project/structure.md` does not exist, NOOP (structure.md is created by `/mema.onboard`)
 
 **If no file was written** (user cancelled at any step):
 - NOOP — no memory changes
@@ -301,4 +305,5 @@ Follow the curation rules in `_memory-protocol.md`.
 Update `.mema/index.md`:
 1. Re-read the current index
 2. If `agent/patterns.md` was modified, update its summary entry
-3. Update the `**Updated:**` date
+3. If `project/structure.md` was modified, update its summary entry
+4. Update the `**Updated:**` date

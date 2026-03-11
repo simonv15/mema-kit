@@ -220,6 +220,39 @@ Using scan findings, create files with **real content** (not empty placeholders)
 - [Constraint discovered]
 ```
 
+### `.mema/project/structure.md`
+
+Using the directory scan from Step 5b, write an annotated repo tree and navigation guide:
+
+```
+# Repository Structure
+
+**Status:** active | **Updated:** [today]
+
+## Directory Tree
+
+```
+[project-name]/
+[2–3 level annotated tree derived from Step 5b scan]
+```
+
+## Entry Points
+
+[Key files per subsystem, e.g.:]
+- `[entry file]` — [what it does]
+
+## Source vs. Generated
+
+- **Source:** [source dirs]
+- **Generated:** [build output, node_modules, etc.]
+- **Gitignored:** `.mema/`, [other gitignored items]
+
+## Where to Find X
+
+[Quick-reference for the top subsystems found during scan:]
+- **[Component type]:** `[path/]`
+```
+
 ### `.mema/agent/lessons.md`
 
 ```
@@ -262,6 +295,7 @@ Build the index from files just created:
 ## Project Knowledge
 - `project/architecture.md` — [one-line stack/architecture summary]
 - `project/requirements.md` — [one-line purpose summary]
+- `project/structure.md` — [one-line: e.g. "Annotated repo tree, 3 top-level dirs"]
 
 ## Agent Knowledge
 - `agent/lessons.md` — [N] lessons recorded
@@ -336,6 +370,7 @@ Print a summary of what was done:
 mema-kit initialized!
 
 [check] .mema/ structure created (product/, features/, project/, agent/)
+[check] project/structure.md generated
 [check] CLAUDE.md [generated / updated / already configured]
 [check] .gitignore updated
 
