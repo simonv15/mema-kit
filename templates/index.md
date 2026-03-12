@@ -11,7 +11,7 @@
 
 ## Product Discovery
 
-<!-- Discovery phase outputs — populated by /mema.seed through /mema.roadmap -->
+<!-- Discovery phase outputs — populated by /mm.seed through /mm.roadmap -->
 <!-- - `product/seed.md` — Raw idea: [brief] -->
 <!-- - `product/roadmap.md` — N features defined -->
 

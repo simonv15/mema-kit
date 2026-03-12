@@ -29,15 +29,15 @@ Claude Code has a **context window** — everything it "knows" during a conversa
 ```bash
 npx mema-kit          # install skills to .claude/skills/
 claude
-> /mema.seed          # capture your idea
-> /mema.clarify       # refine with Q&A
-> /mema.research      # find what exists (web search)
-> /mema.challenge     # stress-test assumptions
-> /mema.roadmap       # create feature list
-> /mema.specify 001   # spec the first feature
-> /mema.plan 001      # technical design
-> /mema.tasks 001     # generate task list
-> /mema.implement 001 # build it, one task at a time
+> /mm.seed          # capture your idea
+> /mm.clarify       # refine with Q&A
+> /mm.research      # find what exists (web search)
+> /mm.challenge     # stress-test assumptions
+> /mm.roadmap       # create feature list
+> /mm.specify 001   # spec the first feature
+> /mm.plan 001      # technical design
+> /mm.tasks 001     # generate task list
+> /mm.implement 001 # build it, one task at a time
 ```
 
 ### Starting from an existing project
@@ -45,43 +45,43 @@ claude
 ```bash
 npx mema-kit          # install skills
 claude
-> /mema.onboard       # scan project, create .mema/, populate memory
-> /mema.specify       # spec a new feature
-> /mema.plan          # technical design
-> /mema.tasks         # generate task list
-> /mema.implement     # build it
+> /mm.onboard       # scan project, create .mema/, populate memory
+> /mm.specify       # spec a new feature
+> /mm.plan          # technical design
+> /mm.tasks         # generate task list
+> /mm.implement     # build it
 ```
 
 ---
 
 ## Discovery Skills (New Projects)
 
-### `/mema.seed [optional: inline idea]`
+### `/mm.seed [optional: inline idea]`
 
 Captures your raw idea exactly as described — no editing, no judgment. Use stream of consciousness, bullet points, half-formed thoughts. Saves to `.mema/product/seed.md`.
 
 ```
-> /mema.seed I want to build a tool that helps remote teams do async standups
+> /mm.seed I want to build a tool that helps remote teams do async standups
 ```
 
-### `/mema.clarify`
+### `/mm.clarify`
 
 Asks 3–5 targeted questions to turn a seed into a crisp problem statement: who is it for, what problem does it solve, what's in scope, what's the motivation. Saves to `.mema/product/clarify.md`.
 
-### `/mema.research [optional: focus area]`
+### `/mm.research [optional: focus area]`
 
 Uses web search to investigate existing solutions, market context, and technical options. Saves findings with source links to `.mema/product/research.md`. Add a focus area to narrow the search:
 
 ```
-> /mema.research competitors
-> /mema.research tech stack options
+> /mm.research competitors
+> /mm.research tech stack options
 ```
 
-### `/mema.challenge`
+### `/mm.challenge`
 
 Plays devil's advocate. Identifies risky assumptions, builds a risk register with severity/likelihood/mitigation, and surfaces blind spots. Critical risks are flagged explicitly. Saves to `.mema/product/challenge.md`.
 
-### `/mema.roadmap`
+### `/mm.roadmap`
 
 Synthesizes all discovery outputs into a prioritized feature list with a problem statement and MVP scope. Creates numbered feature directories (`features/001-name/`, `features/002-name/`, etc.) ready for specification. Saves to `.mema/product/roadmap.md`.
 
@@ -91,53 +91,53 @@ Synthesizes all discovery outputs into a prioritized feature list with a problem
 
 These work on any project — with or without the discovery phase.
 
-### `/mema.specify [feature number or description]`
+### `/mm.specify [feature number or description]`
 
 Creates the "what and why" spec for a feature. If a roadmap exists, presents the feature list and asks which to specify. Otherwise, takes a description directly. Saves to `.mema/features/NNN-name/spec.md`.
 
 ```
-> /mema.specify 001
-> /mema.specify "add user authentication"
+> /mm.specify 001
+> /mm.specify "add user authentication"
 ```
 
-### `/mema.plan [feature]`
+### `/mm.plan [feature]`
 
 Creates the technical implementation design: approach, file changes, key decisions. Reads the feature spec and explores the existing codebase to ensure the plan fits established patterns. Saves to `.mema/features/NNN-name/plan.md`.
 
-### `/mema.tasks [feature]`
+### `/mm.tasks [feature]`
 
 Generates an ordered, checkable task list from the plan. Each task starts with a verb and includes a file path — specific enough to execute without additional context. Saves to `.mema/features/NNN-name/tasks.md`.
 
-### `/mema.implement [feature] [optional: step N | all]`
+### `/mm.implement [feature] [optional: step N | all]`
 
 Executes one task at a time by default. Reads the task list, implements the next incomplete task, verifies it, and updates progress. When all tasks are done, offers to archive the feature.
 
 ```
-> /mema.implement 001         # implement next task
-> /mema.implement 001 step 3  # implement a specific task
-> /mema.implement 001 all     # implement all remaining tasks
+> /mm.implement 001         # implement next task
+> /mm.implement 001 step 3  # implement a specific task
+> /mm.implement 001 all     # implement all remaining tasks
 ```
 
 ---
 
 ## Utility Skills
 
-### `/mema.onboard`
+### `/mm.onboard`
 
 Bootstraps memory for an existing project. Scans the codebase (package.json, README, source files) and populates `.mema/` with real content. Generates or updates `CLAUDE.md`. Safe to re-run — updates stale content, leaves accurate content untouched.
 
 For projects with the old mema-kit structure (`project-memory/`, `agent-memory/`, `task-memory/`): automatically migrates to the new layout on re-run.
 
-### `/mema.recall [optional: full]`
+### `/mm.recall [optional: full]`
 
 Loads project memory into the current session. Shows active features and their status at the top — the most important context for a returning developer. Use at the start of every session.
 
 ```
-> /mema.recall        # minimal — active features + project identity + next action
-> /mema.recall full   # everything + decisions + lessons + product discovery
+> /mm.recall        # minimal — active features + project identity + next action
+> /mm.recall full   # everything + decisions + lessons + product discovery
 ```
 
-### `/mema.create-skill`
+### `/mm.create-skill`
 
 Generates a new memory-aware Claude Code skill. Interviews you on the skill's name, purpose, and complexity level, generates a SKILL.md with proper memory lifecycle phases, shows you a preview before writing, and offers to enhance existing skills if you re-run with an existing skill name.
 
@@ -148,20 +148,20 @@ Generates a new memory-aware Claude Code skill. Interviews you on the skill's na
 ```
 vague idea
     │
-    ├── /mema.seed       → .mema/product/seed.md
-    ├── /mema.clarify    → .mema/product/clarify.md
-    ├── /mema.research   → .mema/product/research.md
-    ├── /mema.challenge  → .mema/product/challenge.md
-    └── /mema.roadmap    → .mema/product/roadmap.md
+    ├── /mm.seed       → .mema/product/seed.md
+    ├── /mm.clarify    → .mema/product/clarify.md
+    ├── /mm.research   → .mema/product/research.md
+    ├── /mm.challenge  → .mema/product/challenge.md
+    └── /mm.roadmap    → .mema/product/roadmap.md
                                   │
                           pick a feature
                                   │
-    ├── /mema.specify    → .mema/features/NNN-name/spec.md
-    ├── /mema.plan       → .mema/features/NNN-name/plan.md
-    ├── /mema.tasks      → .mema/features/NNN-name/tasks.md
-    └── /mema.implement  → source code + .mema/features/NNN-name/status.md
+    ├── /mm.specify    → .mema/features/NNN-name/spec.md
+    ├── /mm.plan       → .mema/features/NNN-name/plan.md
+    ├── /mm.tasks      → .mema/features/NNN-name/tasks.md
+    └── /mm.implement  → source code + .mema/features/NNN-name/status.md
                                   │
-                         /mema.recall (next session)
+                         /mm.recall (next session)
 ```
 
 Every skill reads what previous skills wrote. The index ties it all together.
@@ -224,7 +224,7 @@ Every skill follows four phases, defined in `_memory-protocol.md`:
 
 - **Memory is just markdown.** Open any file to see what the agent knows. Edit directly if something's wrong.
 - **`.mema/` is gitignored by default.** To share decisions with your team, uncomment `!.mema/project/` in `.gitignore`.
-- **Discovery is optional.** You can jump straight to `/mema.specify` if you already know what to build.
-- **One task at a time.** `/mema.implement` defaults to one step per invocation — review each change before continuing.
+- **Discovery is optional.** You can jump straight to `/mm.specify` if you already know what to build.
+- **One task at a time.** `/mm.implement` defaults to one step per invocation — review each change before continuing.
 - **Curate, don't hoard.** The value of memory is signal-to-noise ratio. Prune aggressively.
-- **Start every session with `/mema.recall`.** It takes seconds and saves minutes of re-explanation.
+- **Start every session with `/mm.recall`.** It takes seconds and saves minutes of re-explanation.
