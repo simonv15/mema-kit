@@ -9,6 +9,7 @@
     "docs/",
     "bin/",
     "skills/",
+    "scripts/",
     "templates/"
   ],
   "keywords": [

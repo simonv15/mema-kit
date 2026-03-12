@@ -10,6 +10,8 @@ const VERSION_COMMENT = `<!-- mema-kit v${VERSION} -->`;
 const packageRoot = path.resolve(__dirname, '..');
 const skillsSource = path.join(packageRoot, 'skills');
 const targetDir = path.join(process.cwd(), '.claude', 'skills');
+const scriptsSource = path.join(packageRoot, 'scripts', 'bash');
+const scriptsTarget = path.join(process.cwd(), 'scripts', 'bash');
 
 // Parse arguments
 const args = process.argv.slice(2);
@@ -42,10 +44,13 @@ function runInstall() {
   // Create target directory
   fs.mkdirSync(targetDir, { recursive: true });
 
-  // Copy all skills
+  // Copy all skills and bash automation scripts
   copySkills();
+  copyScripts();
 
-  console.log('✓ mema-kit skills installed to .claude/skills/');
+  console.log('✓ mema-kit installed:');
+  console.log('    .claude/skills/   — Claude Code skills');
+  console.log('    scripts/bash/     — git automation scripts');
   console.log('');
   console.log('Next step: Open your project in Claude Code and run /mema.onboard');
   console.log('');
@@ -75,10 +80,13 @@ function runUpdate() {
     }
   }
 
-  // Copy (overwrite) all skills
+  // Copy (overwrite) all skills and bash automation scripts
   copySkills();
+  copyScripts();
 
-  console.log(`✓ mema-kit skills updated to v${VERSION}`);
+  console.log(`✓ mema-kit updated to v${VERSION}:`);
+  console.log('    .claude/skills/   — skills updated');
+  console.log('    scripts/bash/     — git automation scripts updated');
   console.log('');
   console.log('  .mema/ and CLAUDE.md were not modified.');
   console.log('');
@@ -104,6 +112,27 @@ function copySkills() {
       const content = fs.readFileSync(sourcePath, 'utf8');
       fs.writeFileSync(targetPath, addVersionComment(content));
     }
+  }
+}
+
+function copyScripts() {
+  // Create the target scripts/bash/ directory if it doesn't exist
+  fs.mkdirSync(scriptsTarget, { recursive: true });
+
+  const entries = fs.readdirSync(scriptsSource, { withFileTypes: true });
+
+  for (const entry of entries) {
+    // Only copy .sh files — do NOT inject version comments into bash scripts
+    if (!entry.isFile() || !entry.name.endsWith('.sh')) continue;
+
+    const sourcePath = path.join(scriptsSource, entry.name);
+    const targetPath = path.join(scriptsTarget, entry.name);
+
+    fs.writeFileSync(targetPath, fs.readFileSync(sourcePath));
+
+    // Preserve execute permissions — Node's writeFileSync does not copy the source
+    // file's mode, so scripts would be non-executable without this step
+    fs.chmodSync(targetPath, 0o755);
   }
 }
 
