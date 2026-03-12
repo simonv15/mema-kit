@@ -2,9 +2,9 @@
 description: Refine a raw idea through targeted Q&A and save a structured summary of the clarified intent, audience, and scope.
 ---
 
-# /mema.clarify — Idea Clarification
+# /mm.clarify — Idea Clarification
 
-You are executing the /mema.clarify skill. Follow these steps carefully.
+You are executing the /mm.clarify skill. Follow these steps carefully.
 
 This skill turns a raw seed into a clear, structured problem statement through 2-3 rounds of targeted questions.
 
@@ -13,7 +13,7 @@ This skill turns a raw seed into a clear, structured problem statement through 2
 1. Read `.mema/index.md`
 2. Read `.mema/product/seed.md`
 3. If `seed.md` is missing:
-   - Tell the user: "No seed found. Run `/mema.seed` first, or describe your idea now and I'll treat it as the seed."
+   - Tell the user: "No seed found. Run `/mm.seed` first, or describe your idea now and I'll treat it as the seed."
    - If the user provides an inline description, use it as the seed (save it to `product/seed.md` first)
 4. If `product/clarify.md` exists, read it to understand what was already clarified
 
@@ -94,7 +94,7 @@ Write `.mema/product/clarify.md`:
 ### Guide Next Step
 
 ```
-Next: Run /mema.research to find what already exists and validate your approach.
+Next: Run /mm.research to find what already exists and validate your approach.
 ```
 
 ## AUTO-SAVE & CURATE

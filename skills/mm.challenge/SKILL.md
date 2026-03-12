@@ -2,9 +2,9 @@
 description: Stress-test your idea by challenging assumptions, identifying risks, and surfacing blind spots. Saves a risk register and recommendations to product/challenge.md.
 ---
 
-# /mema.challenge — Idea Stress-Test
+# /mm.challenge — Idea Stress-Test
 
-You are executing the /mema.challenge skill. Follow these steps carefully.
+You are executing the /mm.challenge skill. Follow these steps carefully.
 
 This skill plays devil's advocate — it examines the idea critically to find what could go wrong before any code is written. A challenge that kills a weak idea is a success.
 
@@ -96,7 +96,7 @@ Write `.mema/product/challenge.md`:
 ### Guide Next Step
 
 ```
-Next: Run /mema.roadmap to synthesize everything into a project plan and feature list.
+Next: Run /mm.roadmap to synthesize everything into a project plan and feature list.
 ```
 
 Or, if critical concerns were found:
@@ -105,8 +105,8 @@ Or, if critical concerns were found:
 ⚠ Critical concerns found. Consider addressing them before building:
 [List critical risks]
 
-You can re-run /mema.clarify or /mema.research to address these, then re-run /mema.challenge.
-Or proceed to /mema.roadmap if you've decided to accept these risks.
+You can re-run /mm.clarify or /mm.research to address these, then re-run /mm.challenge.
+Or proceed to /mm.roadmap if you've decided to accept these risks.
 ```
 
 ## AUTO-SAVE & CURATE

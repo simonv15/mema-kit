@@ -1,18 +1,18 @@
 ---
-description: Execute implementation plan steps one at a time. Picks up the next step from an existing feature plan, implements it, verifies the result, and tracks progress. Run /mema.plan first to create a plan.
+description: Execute implementation plan steps one at a time. Picks up the next step from an existing feature plan, implements it, verifies the result, and tracks progress. Run /mm.plan first to create a plan.
 ---
 
-# /mema.implement — Feature Step Execution
+# /mm.implement — Feature Step Execution
 
-You are executing the /mema.implement skill. Follow these steps carefully.
+You are executing the /mm.implement skill. Follow these steps carefully.
 
-This skill picks up a step from an existing feature plan (created by `/mema.plan`), implements it, verifies the result, and updates progress tracking. By default, it implements **one step at a time** to give the user control.
+This skill picks up a step from an existing feature plan (created by `/mm.plan`), implements it, verifies the result, and updates progress tracking. By default, it implements **one step at a time** to give the user control.
 
 ## Phase 1: AUTO-LOAD
 
 1. Read `.mema/index.md` to understand current project state
 2. If `index.md` is missing or `.mema/` does not exist:
-   - Tell the user: "No memory found. Run `/mema.onboard` first."
+   - Tell the user: "No memory found. Run `/mm.onboard` first."
    - **Stop here.**
 3. If `index.md` is empty, run the **Rebuild Procedure** from `_memory-protocol.md`
 4. Scan `## Active Features` in `index.md` to find features with plans
@@ -28,13 +28,13 @@ This skill picks up a step from an existing feature plan (created by `/mema.plan
 
 Parse the user's input:
 
-- **Feature name or number:** `/mema.implement user-auth` or `/mema.implement 001` → find `features/NNN-name/`
-- **Feature + step:** `/mema.implement user-auth step 3` → implement that specific step
+- **Feature name or number:** `/mm.implement user-auth` or `/mm.implement 001` → find `features/NNN-name/`
+- **Feature + step:** `/mm.implement user-auth step 3` → implement that specific step
 - **No input:** list active features from index.md and ask which one
-- **"all" modifier:** `/mema.implement user-auth all` → implement all remaining steps (see 2e)
+- **"all" modifier:** `/mm.implement user-auth all` → implement all remaining steps (see 2e)
 
 If the feature directory doesn't exist:
-- Tell the user: "No feature found for '[input]'. Run `/mema.specify` and `/mema.plan` first."
+- Tell the user: "No feature found for '[input]'. Run `/mm.specify` and `/mm.plan` first."
 - **Stop here.**
 
 ### 2b: Load Feature Context
@@ -46,7 +46,7 @@ Read from `features/NNN-name/`:
 3. **`spec.md`** — what the feature is supposed to do
 4. **`status.md`** — current progress
 
-If `tasks.md` is missing, tell the user: "No tasks found. Run `/mema.tasks [feature]` first."
+If `tasks.md` is missing, tell the user: "No tasks found. Run `/mm.tasks [feature]` first."
 
 ### 2c: Select Step
 
@@ -105,7 +105,7 @@ Task complete: [what was done]
 [====------] [completed]/[total] tasks
 Next: [next task description]
 
-To continue: /mema.implement [feature-name]
+To continue: /mm.implement [feature-name]
 ```
 
 ### 2g: Feature Completion

@@ -2,11 +2,11 @@
 description: Synthesize discovery outputs into a prioritized project plan and feature list. Creates numbered feature directories in .mema/features/ ready for specification and implementation.
 ---
 
-# /mema.roadmap — Project Roadmap
+# /mm.roadmap — Project Roadmap
 
-You are executing the /mema.roadmap skill. Follow these steps carefully.
+You are executing the /mm.roadmap skill. Follow these steps carefully.
 
-This skill synthesizes everything from the discovery phase (seed, clarify, research, challenge) into a structured project plan with a prioritized feature list. It creates feature directories ready for `/mema.specify`.
+This skill synthesizes everything from the discovery phase (seed, clarify, research, challenge) into a structured project plan with a prioritized feature list. It creates feature directories ready for `/mm.specify`.
 
 ## AUTO-LOAD
 
@@ -61,7 +61,7 @@ For each feature in the roadmap, create a directory `features/NNN-kebab-name/` w
 `pending` — defined in roadmap, not yet specified
 ```
 
-Do NOT create spec.md, plan.md, or tasks.md — those are created by `/mema.specify`, `/mema.plan`, and `/mema.tasks`.
+Do NOT create spec.md, plan.md, or tasks.md — those are created by `/mm.specify`, `/mm.plan`, and `/mm.tasks`.
 
 For feature directories that already exist: skip creation, do not overwrite.
 
@@ -117,8 +117,8 @@ Feature directories created:
 - features/002-name/ (pending)
 [...]
 
-Next: Run /mema.specify to write the spec for your first feature.
-Start with: /mema.specify 001
+Next: Run /mm.specify to write the spec for your first feature.
+Start with: /mm.specify 001
 ```
 
 ## AUTO-SAVE & CURATE

@@ -2,7 +2,7 @@
 description: Generate a new memory-aware Claude Code skill. Creates a SKILL.md file with the correct memory lifecycle phases based on the skill's complexity.
 ---
 
-# /mema.create-skill — Generate Memory-Aware Skills
+# /mm.create-skill — Generate Memory-Aware Skills
 
 You are creating a new Claude Code skill that integrates with mema-kit's memory protocol. Follow these steps carefully.
 
@@ -17,7 +17,7 @@ You are creating a new Claude Code skill that integrates with mema-kit's memory 
 Gather the following from the user. Keep it to **2-3 exchanges max** — don't over-interview.
 
 ### Name validation (apply before asking anything else if name is already provided):
-- If the name matches a reserved built-in (`mema.onboard`, `mema.recall`, `mema.plan`, `mema.implement`, `mema.create-skill`), warn: "This name matches a built-in mema-kit skill. Using it in `.claude/skills/` will shadow the built-in. Continue? (yes/no)"
+- If the name matches a reserved built-in (`mm.onboard`, `mm.recall`, `mm.plan`, `mm.implement`, `mm.create-skill`), warn: "This name matches a built-in mema-kit skill. Using it in `.claude/skills/` will shadow the built-in. Continue? (yes/no)"
 - If the name is not kebab-case, convert it automatically and inform the user: "Name converted to kebab-case: [converted-name]"
 
 ### Required:
@@ -74,7 +74,7 @@ You are executing the /[skill-name] skill. Follow these steps carefully.
 ## Phase 1: AUTO-LOAD
 
 1. Read `.mema/index.md` to understand current project state
-2. If `index.md` is missing or empty, inform the user to run `/mema.onboard` first
+2. If `index.md` is missing or empty, inform the user to run `/mm.onboard` first
 3. Based on the user's request, identify and read relevant memory files
 4. Read only what's needed — don't load everything
 
@@ -228,7 +228,7 @@ Before writing any file to disk, show the user the complete generated SKILL.md f
 1. Render the full generated SKILL.md content inside a fenced code block
 2. Ask:
    > "Does this look correct? Reply **APPROVE** to write the file, describe a specific change to revise, or **CANCEL** to exit without writing."
-3. **On a change request**: Apply the change to the named section only. Re-render the full draft. Repeat the prompt. If the user has requested more than 3 revisions, warn: "Multiple revisions requested. Consider re-running `/mema.create-skill` with a more detailed purpose." — then continue with the current draft.
+3. **On a change request**: Apply the change to the named section only. Re-render the full draft. Repeat the prompt. If the user has requested more than 3 revisions, warn: "Multiple revisions requested. Consider re-running `/mm.create-skill` with a more detailed purpose." — then continue with the current draft.
 4. **On CANCEL**: Exit immediately. Do not write, create, or modify any files.
 5. **On APPROVE**: Proceed to Step 3.
 
@@ -295,7 +295,7 @@ Follow the curation rules in `_memory-protocol.md`.
 - UPDATE `project/structure.md`:
   - Add `├── [skill-name]/   — [skill purpose, one clause]` to the `.claude/skills/` subtree in `## Directory Tree`
   - Add entry to `## Where to Find X`: `**[Skill name] skill:** .claude/skills/[skill-name]/SKILL.md`
-  - If `project/structure.md` does not exist, NOOP (structure.md is created by `/mema.onboard`)
+  - If `project/structure.md` does not exist, NOOP (structure.md is created by `/mm.onboard`)
 
 **If no file was written** (user cancelled at any step):
 - NOOP — no memory changes

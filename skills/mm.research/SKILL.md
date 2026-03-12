@@ -2,9 +2,9 @@
 description: Research competitors, market context, and technical options for your idea using web search. Saves findings to product/research.md.
 ---
 
-# /mema.research — Discovery Research
+# /mm.research — Discovery Research
 
-You are executing the /mema.research skill. Follow these steps carefully.
+You are executing the /mm.research skill. Follow these steps carefully.
 
 This skill uses web search to investigate what already exists, validate market opportunity, and explore technical options. It informs the challenge and roadmap phases.
 
@@ -19,7 +19,7 @@ This skill uses web search to investigate what already exists, validate market o
 
 ### Parse Focus Area
 
-If the user provided an optional focus area (e.g., `/mema.research competitors` or `/mema.research tech stack`), narrow the research to that area. Otherwise, run a full research sweep.
+If the user provided an optional focus area (e.g., `/mm.research competitors` or `/mm.research tech stack`), narrow the research to that area. Otherwise, run a full research sweep.
 
 ### Graceful Degradation
 
@@ -94,7 +94,7 @@ Write `.mema/product/research.md`:
 ### Guide Next Step
 
 ```
-Next: Run /mema.challenge to stress-test the idea against these findings.
+Next: Run /mm.challenge to stress-test the idea against these findings.
 ```
 
 ## AUTO-SAVE & CURATE

@@ -2,7 +2,7 @@
 description: Bootstrap the mema-kit memory system for this project. Creates .mema/ directory, scans the project, populates initial memory, and configures CLAUDE.md and .gitignore.
 ---
 
-# /mema.onboard — Project Memory Bootstrap
+# /mm.onboard — Project Memory Bootstrap
 
 You are setting up the mema-kit memory system for this project. Follow these steps carefully. This command is idempotent — safe to re-run. Never overwrite existing data without confirming.
 
@@ -380,9 +380,9 @@ Project scan:
 - [Key finding]
 
 Next steps:
-- New idea? Run /mema.seed to start the discovery workflow
-- Existing feature to build? Run /mema.specify to create a feature spec
-- Start a new session? Run /mema.recall to load context
+- New idea? Run /mm.seed to start the discovery workflow
+- Existing feature to build? Run /mm.specify to create a feature spec
+- Start a new session? Run /mm.recall to load context
 ```
 
 For a re-run with migration:
@@ -395,5 +395,5 @@ mema-kit updated!
 [check] Migrated task-memory/ → features/
 [check] Directory structure verified
 
-Your existing memory is preserved. Run /mema.recall to see current state.
+Your existing memory is preserved. Run /mm.recall to see current state.
 ```

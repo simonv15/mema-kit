@@ -2,9 +2,9 @@
 description: Create a feature specification. Picks a feature from the roadmap or takes a fresh description, and saves a non-technical spec to features/NNN-name/spec.md.
 ---
 
-# /mema.specify — Feature Specification
+# /mm.specify — Feature Specification
 
-You are executing the /mema.specify skill. Follow these steps carefully.
+You are executing the /mm.specify skill. Follow these steps carefully.
 
 This skill creates a feature spec — the "what and why" before any technical planning. It works with or without a prior discovery phase.
 
@@ -12,7 +12,7 @@ This skill creates a feature spec — the "what and why" before any technical pl
 
 1. Read `.mema/index.md`
 2. If `.mema/` doesn't exist:
-   - Tell the user: "No memory found. Run `/mema.onboard` first to set up mema-kit."
+   - Tell the user: "No memory found. Run `/mm.onboard` first to set up mema-kit."
    - **Stop here.**
 3. Read if they exist:
    - `product/roadmap.md` — to present the feature list
@@ -28,7 +28,7 @@ This skill creates a feature spec — the "what and why" before any technical pl
 - List features from `product/roadmap.md` that don't yet have a `spec.md`
 - Ask: "Which feature would you like to specify? (Enter number or name)"
 
-**If an argument was given** (e.g., `/mema.specify 001` or `/mema.specify "add search"`):
+**If an argument was given** (e.g., `/mm.specify 001` or `/mm.specify "add search"`):
 - If it's a number: find `features/NNN-*/` matching that number
 - If it's a name: find the closest matching feature directory, or create a new one
 - If it's a fresh description (no matching directory): create a new feature directory
@@ -106,7 +106,7 @@ After saving `spec.md`, create (or check out) the feature branch:
 3. **If found:** run: `bash scripts/bash/create-feature-branch.sh <NNN> <name> --json`
    - `status: "created"` → include in confirmation: "Branch created: feat-NNN-name"
    - `status: "exists"` → include: "Branch already exists: feat-NNN-name (checked out)"
-   - `status: "error"` → surface the error message; note that spec.md was saved successfully; tell user to resolve the issue (e.g. commit or stash dirty files) and re-run `/mema.specify`
+   - `status: "error"` → surface the error message; note that spec.md was saved successfully; tell user to resolve the issue (e.g. commit or stash dirty files) and re-run `/mm.specify`
 4. **If not found:** note: "Git scripts not installed — run `npx mema-kit` to enable automatic branch creation."
 
 ### Confirm to User
@@ -118,7 +118,7 @@ Branch:     [feat-NNN-name (created) | feat-NNN-name (exists) | error — see ab
 [Feature name]: [one-line purpose summary]
 [N] acceptance criteria defined
 
-Next: /mema.plan [NNN-name]
+Next: /mm.plan [NNN-name]
 ```
 
 ## AUTO-SAVE & CURATE

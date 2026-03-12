@@ -1,18 +1,18 @@
 ---
-description: Create a technical implementation plan for a feature. Reads the feature spec, explores the codebase, and writes a detailed plan to features/NNN-name/plan.md for use by /mema.tasks and /mema.implement.
+description: Create a technical implementation plan for a feature. Reads the feature spec, explores the codebase, and writes a detailed plan to features/NNN-name/plan.md for use by /mm.tasks and /mm.implement.
 ---
 
-# /mema.plan — Feature Technical Design
+# /mm.plan — Feature Technical Design
 
-You are executing the /mema.plan skill. Follow these steps carefully.
+You are executing the /mm.plan skill. Follow these steps carefully.
 
-This skill takes a feature spec (created by `/mema.specify`) and produces a technical implementation plan — what to build, how it fits the existing architecture, and which files to change.
+This skill takes a feature spec (created by `/mm.specify`) and produces a technical implementation plan — what to build, how it fits the existing architecture, and which files to change.
 
 ## Phase 1: AUTO-LOAD
 
 1. Read `.mema/index.md` to understand current project state
 2. If `index.md` is missing or `.mema/` does not exist:
-   - Tell the user: "No memory found. Run `/mema.onboard` first to set up mema-kit."
+   - Tell the user: "No memory found. Run `/mm.onboard` first to set up mema-kit."
    - **Stop here.**
 3. If `index.md` is empty, run the **Rebuild Procedure** from `_memory-protocol.md`
 4. Load relevant memory:
@@ -27,11 +27,11 @@ This skill takes a feature spec (created by `/mema.specify`) and produces a tech
 ### 2a: Select Feature
 
 Parse the user's input:
-- **Feature name or number given:** `/mema.plan user-auth` or `/mema.plan 001` → find matching `features/NNN-name/`
+- **Feature name or number given:** `/mm.plan user-auth` or `/mm.plan 001` → find matching `features/NNN-name/`
 - **No input:** list features that have a `spec.md` but no `plan.md`; ask which to plan
 
 If the feature directory doesn't exist:
-- Tell the user: "No feature found for '[input]'. Run `/mema.specify` first to create a feature spec."
+- Tell the user: "No feature found for '[input]'. Run `/mm.specify` first to create a feature spec."
 - **Stop here.**
 
 If `plan.md` already exists:
@@ -43,7 +43,7 @@ If `plan.md` already exists:
 Read `features/NNN-name/spec.md` in full.
 
 If `spec.md` is missing:
-- Tell the user: "No spec found for [feature-name]. Run `/mema.specify` first."
+- Tell the user: "No spec found for [feature-name]. Run `/mm.specify` first."
 - **Stop here.**
 
 ### 2c: Explore the Codebase
@@ -127,7 +127,7 @@ Write `features/NNN-name/plan.md`:
 
 ---
 Plan saved to features/[NNN-name]/plan.md
-Next: /mema.tasks [NNN-name]
+Next: /mm.tasks [NNN-name]
 ```
 
 ## Phase 3: AUTO-SAVE & CURATE

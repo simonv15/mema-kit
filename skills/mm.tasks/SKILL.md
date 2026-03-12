@@ -2,17 +2,17 @@
 description: Generate an ordered implementation task list for a feature. Reads the feature spec and plan, then writes a checkable task list to features/NNN-name/tasks.md.
 ---
 
-# /mema.tasks — Feature Task Generation
+# /mm.tasks — Feature Task Generation
 
-You are executing the /mema.tasks skill. Follow these steps carefully.
+You are executing the /mm.tasks skill. Follow these steps carefully.
 
-This skill turns a technical plan into a concrete, ordered task list that `/mema.implement` can execute step by step.
+This skill turns a technical plan into a concrete, ordered task list that `/mm.implement` can execute step by step.
 
 ## AUTO-LOAD
 
 1. Read `.mema/index.md`
 2. If `.mema/` doesn't exist:
-   - Tell the user: "No memory found. Run `/mema.onboard` first."
+   - Tell the user: "No memory found. Run `/mm.onboard` first."
    - **Stop here.**
 3. Load relevant memory:
    - `agent/lessons.md` — to inform task granularity based on past experience
@@ -23,11 +23,11 @@ This skill turns a technical plan into a concrete, ordered task list that `/mema
 ### Select Feature
 
 Parse the user's input:
-- **Number or name given** (e.g., `/mema.tasks 001` or `/mema.tasks user-auth`): find matching `features/NNN-name/`
+- **Number or name given** (e.g., `/mm.tasks 001` or `/mm.tasks user-auth`): find matching `features/NNN-name/`
 - **No input**: list features that have `plan.md` but no `tasks.md`; ask which to generate tasks for
 
 If no matching feature directory:
-- Tell the user: "No feature found for '[input]'. Run `/mema.specify` first."
+- Tell the user: "No feature found for '[input]'. Run `/mm.specify` first."
 - **Stop here.**
 
 ### Load Feature Files
@@ -37,7 +37,7 @@ Read from `features/NNN-name/`:
 2. **`spec.md`** — acceptance criteria to guide task completeness
 
 If `plan.md` is missing:
-- Tell the user: "No plan found for [feature-name]. Run `/mema.plan [feature]` first."
+- Tell the user: "No plan found for [feature-name]. Run `/mm.plan [feature]` first."
 - **Stop here.**
 
 ### Handle Existing tasks.md
@@ -54,7 +54,7 @@ From the plan, derive an ordered sequence of implementation tasks:
 **Task properties:**
 - Start with a verb: "Create", "Add", "Update", "Write", "Implement", "Configure"
 - Include the exact file path when a specific file is involved
-- Small enough that each task completes in one `/mema.implement` invocation
+- Small enough that each task completes in one `/mm.implement` invocation
 - Ordered logically: foundations before features, features before tests, tests before polish
 
 **Grouping** (use section headers when ≥ 6 tasks):
@@ -112,7 +112,7 @@ Tasks generated: features/[NNN-name]/tasks.md
 
 [N] tasks across [M] sections.
 
-Next: /mema.implement [NNN-name]
+Next: /mm.implement [NNN-name]
 ```
 
 ## AUTO-SAVE & CURATE

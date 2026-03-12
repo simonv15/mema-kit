@@ -2,9 +2,9 @@
 description: Recall project memory into the current session. Loads .mema/ knowledge (architecture, decisions, lessons, patterns) and prints a formatted summary. Use at the start of a session to restore context.
 ---
 
-# /mema.recall — Session Memory Recall
+# /mm.recall — Session Memory Recall
 
-You are executing the /mema.recall skill. This is a **read-only** skill — it loads memory and prints a summary into the conversation. It never writes to any files.
+You are executing the /mm.recall skill. This is a **read-only** skill — it loads memory and prints a summary into the conversation. It never writes to any files.
 
 Follow these steps carefully.
 
@@ -21,7 +21,7 @@ If the user provides an unrecognized argument, warn them and fall back to Minima
 
 1. Read `.mema/index.md`
 2. If `index.md` is missing or `.mema/` does not exist:
-   - Tell the user: "No memory found. For an existing project, run `/mema.onboard` to set up mema-kit. For a new idea, run `/mema.seed` to start the discovery workflow."
+   - Tell the user: "No memory found. For an existing project, run `/mm.onboard` to set up mema-kit. For a new idea, run `/mm.seed` to start the discovery workflow."
    - **Stop here** — do not continue.
 3. Parse the index to identify available memory files.
 
@@ -69,7 +69,7 @@ Print the memory summary directly into the conversation. **Never write output to
 ### Active Features
 [For each active feature:]
 - **[NNN] [Feature name]** — [status] | Next: [next task]
-[If no active features: "No features in progress. Run /mema.specify to start one."]
+[If no active features: "No features in progress. Run /mm.specify to start one."]
 
 ### Project
 [Name] — [purpose from requirements.md]
@@ -79,7 +79,7 @@ Stack: [tech stack from architecture.md]
 [Suggest the most logical next command based on active feature status]
 
 ---
-*Use `/mema.recall full` for decisions, lessons, and product discovery.*
+*Use `/mm.recall full` for decisions, lessons, and product discovery.*
 ```
 
 ---
@@ -92,7 +92,7 @@ Stack: [tech stack from architecture.md]
 ### Active Features
 [For each active feature:]
 - **[NNN] [Feature name]** — [status] | Next: [next task]
-[If no active features: "No features in progress. Run /mema.specify to start one."]
+[If no active features: "No features in progress. Run /mm.specify to start one."]
 
 ### Product Discovery
 [If product/ files exist:]
@@ -134,4 +134,4 @@ Where to find:
 
 ---
 
-**Important:** This skill is purely informational. If memory files are missing or out of date, suggest the user run `/mema.onboard` or the relevant skill — do not modify memory files yourself.
+**Important:** This skill is purely informational. If memory files are missing or out of date, suggest the user run `/mm.onboard` or the relevant skill — do not modify memory files yourself.

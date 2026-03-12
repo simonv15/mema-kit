@@ -2,9 +2,9 @@
 description: Capture a raw idea and save it as the starting point for the mema-kit discovery workflow. Run this first when starting a new project from scratch.
 ---
 
-# /mema.seed — Idea Capture
+# /mm.seed — Idea Capture
 
-You are executing the /mema.seed skill. Follow these steps carefully.
+You are executing the /mm.seed skill. Follow these steps carefully.
 
 This is the first step of the discovery workflow. It captures a raw idea — exactly as described, no editing — and saves it as the foundation for everything that follows.
 
@@ -19,7 +19,7 @@ This is the first step of the discovery workflow. It captures a raw idea — exa
 ### Capture the Idea
 
 Get the idea from one of these sources (in priority order):
-1. **Inline argument** — everything after `/mema.seed` in the user's message
+1. **Inline argument** — everything after `/mm.seed` in the user's message
 2. **Prompt** — if no argument, ask: "What's your idea? Don't worry about structure — just describe it."
 
 Accept anything: one sentence, bullet points, stream of consciousness, half-formed thoughts. Do not edit, filter, or structure the input.
@@ -72,7 +72,7 @@ For the project name: use any name mentioned by the user, or derive a 2-3 word w
 Tell the user:
 
 ```
-Next: Run /mema.clarify to turn this into a crisp problem statement.
+Next: Run /mm.clarify to turn this into a crisp problem statement.
 ```
 
 ## AUTO-SAVE & CURATE
