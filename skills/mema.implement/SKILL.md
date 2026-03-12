@@ -124,11 +124,30 @@ All [N] tasks implemented.
 
 ### Files changed
 [List of files created or modified]
-
-Archive this feature? (moves to archive/ and removes from active features)
 ```
 
-2. If user confirms, archive in Phase 3.
+2. **Git Automation Checkpoint:**
+   Check if `scripts/bash/commit-changes.sh` exists (use Glob: `scripts/bash/commit-changes.sh`):
+
+   **If found:**
+   - Ask the user: "All [N] tasks are complete. Please confirm your tests pass before I commit. (yes/no)"
+   - If **yes**:
+     - Compose a Conventional Commits message: `feat(<feature-name>): <brief description from spec Purpose>`
+     - Stage implementation files: run `git add <file> ...` for each file created or modified during this implementation (review the progress log in `status.md` for the file list)
+     - Run: `bash scripts/bash/commit-changes.sh --json "<commit_message>"`
+     - On `status: "ok"`: report "Committed [sha]." and print "**To undo: `git reset HEAD~1`**"
+       Then ask: "Would you like to open a draft PR? (yes/no)"
+       - If **yes** and `scripts/bash/create-pr.sh` exists:
+         Generate a PR title (same as the commit message description) and a short body summarising what was built, then run: `bash scripts/bash/create-pr.sh --json "<title>" "<body>"`
+         Handle all statuses: `created` → report URL; `exists` → report existing URL; `missing` → display the manual steps printed to stderr; `skipped` → note non-GitHub remote; `error` → report error
+       - If `create-pr.sh` not found: note "Run `npx mema-kit` to install PR automation scripts."
+     - On `status: "error"`: report the error; do NOT proceed to archiving
+   - If **no**: note "Skipping commit — remember to run `git add` + `git commit` + `git push` manually before opening a PR."
+
+   **If not found:** note: "Git scripts not installed — run `npx mema-kit` to enable automatic commit and PR creation."
+
+3. Archive this feature? (moves to `archive/` and removes from active features)
+   If user confirms, archive in Phase 3.
 
 ### 2h: Learn
 
