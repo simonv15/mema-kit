@@ -16,7 +16,7 @@ Status values: `pending` → `in-progress` → `complete`
 
 ## Next Task
 
-[What to work on next — filled in by /mema.implement]
+[What to work on next — filled in by /mm.implement]
 
 ## Blockers
 

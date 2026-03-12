@@ -52,10 +52,10 @@ function runInstall() {
   console.log('    .claude/skills/   — Claude Code skills');
   console.log('    scripts/bash/     — git automation scripts');
   console.log('');
-  console.log('Next step: Open your project in Claude Code and run /mema.onboard');
+  console.log('Next step: Open your project in Claude Code and run /mm.onboard');
   console.log('');
   console.log('  claude');
-  console.log('  > /mema.onboard');
+  console.log('  > /mm.onboard');
   console.log('');
 }
 
@@ -152,7 +152,7 @@ Usage:
   npx mema-kit --update   Update skills to the latest version
   npx mema-kit --help     Show this help message
 
-After installing, open your project in Claude Code and run /mema.onboard.
+After installing, open your project in Claude Code and run /mm.onboard.
 
 Learn more: https://github.com/simonv15/mema-kit
   `.trim());
